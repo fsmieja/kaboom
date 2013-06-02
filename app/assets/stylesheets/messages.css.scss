@@ -1,0 +1,80 @@
+// Place all the styles related to the Messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#wrapper {
+    width:$tab-width;
+}
+ul.tabs {
+    width:$tab-width;
+    margin:0;
+    padding:0;
+}
+ul.tabs li {
+    display:block;
+    float:left;
+    padding:0 5px;
+}
+ul.tabs li a {
+    display:block;
+    float:left;
+    padding:5px;
+    font-size:0.8em;
+    background-color:#e0e0e0;
+    color:#666;
+    text-decoration:none;
+}
+.selected {
+    font-weight:bold;
+}
+.tab-content {
+    clear:both;
+    border:1px solid #ddd;
+    padding:10px;
+}
+
+div.html {
+  background: lightyellow;
+  width: $full-width;
+  height: $message-box-height;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid yellow;
+  overflow: auto;
+}
+
+div.add-comment {
+  background: lightyellow;
+  width: $full-width+30;
+  height: $add-comment-box-height+30;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid gray;
+  //overflow: auto;
+}
+
+textarea.raw {
+  background: lightgray;
+  width: $full-width;
+  height: $message-box-height;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid blue;
+  overflow: auto;
+}
+
+textarea.stripped {
+  background: #a0faaa;
+  width: $full-width;
+  height: $message-box-height;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid blue;
+  overflow: auto;
+}
+
+textarea.add-comment {
+  background: beige;
+  width: $full-width+20;
+  height: $add-comment-box-height;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid lightgray;
+  overflow: auto;
+}

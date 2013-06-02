@@ -1,0 +1,6 @@
+  <tr>
+    <td><%= link_to(note.title, note_path(note)) %></td>
+    <td style="text-align: center"><%= note.tags.count==0 ? "0" : link_to(note.tags.count, note_tags_path(note)) %></td>
+    <td style="width: 150px"><%= note.created_at.to_formatted_s(:long) %></td>
+    <td style="width: 150px"><%= note.updated_at.to_formatted_s(:long) %></td>
+  </tr>

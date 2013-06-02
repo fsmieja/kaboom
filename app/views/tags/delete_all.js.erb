@@ -1,0 +1,13 @@
+<% if @removed %>
+	<% @tag_ids.each do |id| %>
+		var href = '/tags/<%= id %>';
+		// remove the row
+		$('table#orphans tr').find('a[href="' + href + '"]').parents("table#orphans tr").hide();
+	<% end %>
+	var numVisible = $('table#orphans tr:visible').length;
+	if (numVisible == 0) {
+		$('table#orphans').hide();
+	}
+<% else %>
+	alert('<%= @tag_message %>');
+<% end %>

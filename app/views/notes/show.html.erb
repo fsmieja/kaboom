@@ -1,0 +1,68 @@
+
+<table>
+
+<tr>
+	<td><b>Title:</b></td>
+	<td><%= @note.title %></td>
+</tr>
+<tr>
+	<td><b>Location:</b></td>
+	<td><%= @note.location %></td>
+</tr>
+
+
+<tr>
+	<td><b>Created:</b></td>
+  	<td><%= @note.created_at %></td>
+</tr>
+<tr>
+	<td><b>Updated:</b></td>
+  	<td><%= @note.updated_at %></td>
+</tr>
+</table>
+</p>
+
+
+<% 
+actions_text = ""
+@actions.each_with_index do |a,i| 
+  actions_text += "#{i+1}.\t#{a}\n" 
+end 
+events_text = ""
+@events.each_with_index do |e,i| 
+  events_text += "#{i+1}.\t#{e}\n" 
+end 
+%>
+
+
+<div id="wrapper">
+    <ul class="tabs">
+        <li><a href="javascript:void(0)" class="defaulttab" rel="tabs1">HTML View</a></li>
+        <li><a href="javascript:void(0)" rel="tabs2">Raw Content</a></li>
+        <li><a href="javascript:void(0)" rel="tabs3">Stripped of Tags</a></li>
+        <li><a href="javascript:void(0)" rel="tabs4">Actions (<%= @actions.count %>)</a></li>
+        <li><a href="javascript:void(0)" rel="tabs5">Events (<%= @events.count %>)</a></li>
+        <li id="tag-tab"><a href="javascript:void(0)"  rel="tabs6"><span id="tag-header">Tags (<%= @tags.count %>)</span></a></li>
+    </ul>
+  
+  <%= render 'tags/add_tag', :id => @note.id, :resource => "note", :all_tags => @all_tags %>
+
+    <div class="tab-content" id="tabs1"><div id="htmlpreview" class="html"><%= raw @note.content %></div></div>
+    <div class="tab-content" id="tabs2"><textarea class="raw"><%= @note.content %></textarea> </div>
+    <div class="tab-content" id="tabs3">
+    	<textarea class="stripped"><%= raw strip_tags(@note.content.gsub(/&nbsp;/i," ").gsub(/<div class=\"paragraph\_break\"/i,"&#013; &#010;<div ")) %></textarea> 
+    </div>
+    <div class="tab-content" id="tabs4"><textarea class="stripped"><%= actions_text %></textarea></div>
+    <div class="tab-content" id="tabs5"><textarea class="stripped"><%= events_text %></textarea></div>
+    <div class="tab-content" id="tabs6"><%= render 'tags/tag_list', :tags => @tags, :id => @note.id, :controller => "notes"%>
+
+    </div>
+</div>  
+  
+
+
+</p>
+
+	<%= render 'add_note', :note_id => @note.id, :note => @new_note %>
+
+<%= link_to 'All Notes', project_notes_path(@note.project_id) %>

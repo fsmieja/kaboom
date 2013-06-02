@@ -1,0 +1,195 @@
+// Place all the styles related to the tags controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+@mixin triangle-left($width:10px, $color: red) {
+  &:after {     
+    content: "";
+    float: left;
+    width: 0;
+    height: 0;
+    border-top: $width solid transparent;
+    border-right: $width solid $color;
+    border-bottom: $width solid transparent;
+  }
+}
+
+
+@mixin tag-hole($diameter:4px,$triangle-width:15px,$background: white) {
+  &:before {
+    content: "";
+    position: absolute;
+    top: $triangle-width - $diameter/2;
+    left: $triangle-width/2;
+    width: $diameter;
+    height: $diameter;
+    background: $background;
+    
+    @include rounded-corners($diameter/2);
+
+    -moz-box-shadow: -1px -1px 1px #424444;
+    -webkit-box-shadow: -1px -1px 1px #424444;
+    box-shadow: -1px -1px 1px #424444;
+  }
+}
+
+.popup {
+  text-decoration: none;
+  z-index: 10;
+  font-size: 11px;
+  color: black;
+  background: $tag-label-color; 
+  cursor: pointer;
+  border: 1px solid black;
+  position: absolute;
+  line-height: 8px;
+  padding: 1px;
+  margin: 0;
+  top: 0px;
+  right: 0px;
+  
+  &:hover {
+    text-decoration: none;
+    background: red;
+    color: white; 
+  }
+}
+
+    $font-size-px:        12px;
+    $font-size-rem:       1.2rem;
+    $tag-height:          30px; // calculated from font-size*something + 2*padding-height
+    $line-spacing:        10px;
+    $tag-padding-height:  4px;
+    $tag-padding-width:   10px;
+    $tag-hole-size:       3px;
+
+.price-tag {
+    margin: 1em 0;
+    padding: 0;
+    list-style-type: none;
+    display: inline-block;
+    
+
+    li {
+      float: left;
+      height: $tag-height + $line-spacing;
+      line-height: $tag-height;
+      position: relative;
+      margin: 0 1em 0.6em 0;
+    }
+
+    a.price-tag-link {
+      background: $tag-label-color;
+      color: white;
+      font-size: $font-size-px;   // for compatability with old (IE) browsers
+      font-size: $font-size-rem;
+      text-decoration: none;
+      padding: $tag-padding-height $tag-padding-width;
+    
+      @include rounded-right-edge(3px);
+      @include triangle-left($tag-height/2,$tag-label-color);        
+      @include tag-hole($tag-hole-size,$tag-height/2);
+    
+      &:hover {
+        background: $tag-label-color;        
+        &:after {
+          border-color:  transparent $tag-label-color transparent transparent ;
+        }
+      }
+   }
+}
+
+div.price-tagged {
+  position: absolute;
+  bottom: -47px;
+  left: 0px;   
+  z-index: 0; 
+  //@include rotate(-45deg);
+}
+
+
+
+div.tagcloud {
+  //width: 100px;
+  //border: 1px solid purple;
+}
+
+table.cloud-and-table {
+  tr {
+    padding: 0;
+    th {
+         background-color: #eeb;
+         border: 1px solid blue;
+         text-align: center;
+    }   
+    
+    td {
+      padding: 0;
+      vertical-align: top;
+    }
+  }
+}
+
+td.tag-heading {
+  font-size: $huge-font-size;
+  color: #eaa;
+  font-weight: bold;  
+}
+
+table.over-tag-list {
+    border-collapse: collapse;
+
+    padding: 0px;    
+    margin: 0px;
+
+    th {
+         background-color: #eeb;
+         border: 1px solid blue;
+         text-align: center;
+    }   
+    td {
+      padding: 0px;    
+      border: 1px solid blue;
+      vertical-align: top;
+    }
+}
+
+table.tag-list {
+ 
+    tr {
+      border: 1px solid #aaa;
+    }
+    th {
+        background-color: #eeb;
+        border: none;
+        text-align: left; 
+        padding: 0 10px 0 10px;
+    }   
+    td {
+      padding: 0 10px 0 10px;
+      border: none; 
+      text-align: left;
+    }
+     
+}
+
+.add-tag {
+  position: absolute;
+  top: -24px;
+  right: 0;
+  padding: 0;
+  cursor: pointer;
+  //color: lightgray;
+  font-family: arial;
+}
+
+div.tag-entry {
+  border: 2px solid black;
+  background: white;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+

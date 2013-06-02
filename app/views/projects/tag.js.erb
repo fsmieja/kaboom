@@ -1,0 +1,14 @@
+<% if @added %>
+	<% tag_id = @new_tag.id %>
+	if($("li#<%= tag_id %>").length == 0) {
+		$('#tag-list li:last').after('<li id="<%= tag_id %>"><%= link_to @new_tag.name, tag_path(tag_id), class: "price-tag-link" %><%= link_to "X", {controller: :notes, action: :remove_tag, tag_id: tag_id}, {method: :post, id: "popup-#{tag_id}", class: "popup", remote: true }%>');
+	}
+<% else %>
+  alert('<%= @tag_message %>');
+<% end %>
+
+$("form#new-tag-form")[0].reset();	
+$("#new_tag").focus();
+
+$('#tagcloud').load('<%= pretty_project_notes_path(@project) %> #tagcloud') ;
+

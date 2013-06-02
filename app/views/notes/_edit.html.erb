@@ -1,0 +1,12 @@
+<%= form_for @note do |f| %>
+
+	<%= f.label 'Title' %>	
+	<%= f.text_field :title %><br/>
+	<%= f.label 'Location' %>	
+	<%= f.text_field :location %><br/>
+	<%= f.label 'Content' %>	
+	<%= f.text_area :content %><br/>
+	<%= f.submit %>
+<%= hidden_field_tag "id", @project.id %>
+	
+<% end %>

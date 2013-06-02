@@ -1,0 +1,113 @@
+<h1>Notes for Project '<%=@project.name%>'</h1>
+<p></p>
+
+
+<div id="table" class="note-table">
+	<table>
+		<tr>
+			<td colspan="2">
+				<%= button_tag "Expand", id: "expand_button" %>
+				<div class="expand-full-screen"><%= link_to(image_tag("fullscreen-close.png", size: "25x25"), project_path({id: @project, pretty: true})) %></div>			
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div id="source" class="divide-table-source">
+					<%= render 'notes/table_postits', posts: @posts %>
+				</div>
+			</td>
+			<td>
+				<div id="target" class="divide-table-target"></div>				
+			</td>
+		</tr>
+	</table>
+</div>
+
+<%= button_to "Create Note", new_project_note_path(@project.id), :method => 'get' %>
+<%= link_to "Project", project_path(@project)%> |
+
+<%= form_tag note_position_path, remote: true, id: "position_form", method: :put do %>
+<%= hidden_field_tag "id" %>
+<%= hidden_field_tag "top" %>
+<%= hidden_field_tag "left" %>
+<% end %>
+
+<script type="text/javascript">
+$("#expand_button").click(function() {
+	$(".divide-table-target").toggle();
+  	//$(".draggable").draggable({	containment: "#table"});
+	return false;
+})
+
+//$(function() {
+	/*
+  $(".draggable").draggable({
+  	//cursor: "crosshair",
+  	revert: "invalid",
+  	stack: ".draggable", 
+  	start: function( event, ui ) {
+  		//containment: "#table"
+  	},
+  	stop: function( event, ui ) {
+  		var id = $(this).attr("note_id");
+  		var top = ui.offset.top;
+  		var left = ui.offset.left;
+		var zindex = $( this ).css("z-index");
+  		//alert('top: '+top+', left: '+left+',  zindex: '+zindex);
+  		$('#id').val(id);
+  		$('#top').val(top);
+  		$('#left').val(left);
+		$('#position_form').submit();
+		//this.draggable( "option", "revert", false );
+		//$(this).draggable( "option", "stack", "notes" );
+
+  	}
+  	//containment: "parent",
+  });
+  $(".divide-table-target").droppable({
+  	tolerance: "intersect",
+  	accept: ".draggable",
+  	drop: function(event, ui) {
+  		var obj = ui.draggable;
+  		obj.detach().appendTo(this);
+  		//obj.draggable({	containment: this});
+  		var obj_top = ui.offset.top;
+  		var obj_left = ui.offset.left;
+  		var container_top = $(".divide-table-target").offset().top;
+  		var container_left = $(".divide-table-target").offset().left;
+  		//obj_top = container_top-obj_top;
+  		//obj_left = container_left-obj_left;
+  		//var obj_left = obj.offset().left;
+  		
+  		//alert('hi');
+  		alert('container: '+container_top+','+container_left+', obj: '+obj_top+','+obj_left);
+  		obj.offset({top: obj_top, left: obj_left});
+  		obj.css("z-index", "1");
+  	}
+  });
+  $(".divide-table-source").droppable({
+  	tolerance: "intersect",
+  	accept: ".draggable",
+  	drop: function(event, ui) {
+  		var obj = ui.draggable;
+  		/*if (obj.draggable( "option", "containment")==this) {
+  			obj.draggable( "option", "revert", true );
+  		}
+  		else {*/  			
+  		//	obj.appendTo(this);
+  		//	obj.offset({top: 50});
+  		//}
+//  	}
+//  });
+
+//});
+
+//$(".draggable").droppable({
+  //  over: function() {
+        //   $(this).attr("z-index")=;
+   //}
+//});
+
+$("#source").sortable({connectWith: "#target"});
+$("#target").sortable({connectWith: "#source"});
+</script>

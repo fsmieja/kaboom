@@ -1,0 +1,14 @@
+<%= form_for @tag do |f| %>
+
+<% if many %>
+	<%= f.label 'Tag list (Newline, ; or , for each new tag)' %>
+	<%= f.text_area :name %><br/>
+	<%= hidden_field_tag 'many', true %>
+	<%= f.submit 'Create Tags' %>
+<% else %>
+	<%= f.label 'Tag' %>	
+	<%= f.text_field :name %><br/>
+	<%= f.submit %>
+<% end %>
+	
+<% end %>

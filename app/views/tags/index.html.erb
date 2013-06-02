@@ -1,0 +1,49 @@
+<table  class="over-tag-list">
+	<tr>
+		<th>Utilized Tags</th>
+		<th>Orphaned Tags</th>
+	</tr>
+	<tr>
+		<td>
+			<table class="tag-list sortable">
+				<tr>
+					<th><%= sortable('name', 'Name') %></th>
+					<th>Times Used</th>
+					<th><%= sortable('created_at', "Created")%>
+					<th><%= sortable('last_used_at', "Last Used")%>
+					<th></th>
+				</tr>
+				<%= render @used_tags, :orphan => false  %>
+			</table>
+		</td>
+		<td>
+			<%= form_tag delete_all_tags_path, method: :put, remote: true do %>
+			<table class="tag-list" id="orphans">
+				<tr>
+					<th><%= check_box_tag "select_all" %></th>
+					<th>Name</th>
+				</tr>
+				<%= render @unused_tags, :orphan => true  %>
+			</table>
+			<%= submit_tag "Delete selected", confirm: "Are you sure?"%>
+			<% end %>
+		</td>
+	</tr>
+<table>
+
+<%= link_to "Add Tag", new_tag_path %> |
+<%= link_to "Add Many Tags", new_tag_path(:many => true) %>
+
+<script>
+$('#select_all').click(function() {
+   if (this.checked) {
+       $(':checkbox').each(function() {
+           this.checked = true;                        
+       });
+   } else {
+      $(':checkbox').each(function() {
+           this.checked = false;                        
+       });
+   } 
+});
+</script>

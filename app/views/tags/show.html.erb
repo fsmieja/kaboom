@@ -1,0 +1,16 @@
+
+<table>
+<tr>
+	<td><b>Tag Name:</b></td>
+	<td class="tag-heading"><%= @tag.name %></td>
+</tr>
+<tr>
+	<td><b>Created:</b></td>
+  	<td><%= @tag.created_at %></td>
+</tr>
+</table>
+</p>
+
+<%= render 'tags/references', :tag => @tag, :projects => @projects, :project_numbers => @project_numbers, :notes => @notes %></td>
+
+<%= link_to 'Edit', edit_tag_path(@tag) %> | <%= link_to 'All Tags', tags_path %>

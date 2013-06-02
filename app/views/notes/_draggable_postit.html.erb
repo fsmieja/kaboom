@@ -1,0 +1,49 @@
+<% postit = draggable_postit %>
+<div  note_id="<%= postit.id %>" class="draggable">
+	<div  class="postit" >
+		<b><%= postit.title %></b><br/><%= postit.content %>
+		<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
+		<% if postit.tags.count>0 %>
+			<div class="tagged-icon">
+				<table><tr>
+					<td><%= link_to image_tag('tagged.png', size: "25x25"), note_tags_path(postit), title: "This note has been tagged #{postit.tags.count} times" %></td>
+					<td ><%= postit.tags.count %></td>
+				</tr></table>
+			</div>
+		<% end %> 
+	</div>
+</div>
+<script>
+<% 
+
+if postit.position.nil? 	
+ top = 20 + (draggable_postit_counter / 3 * 350)
+# top += 40 if draggable_postit_counter == 0
+ left = 50 + (draggable_postit_counter % 3==0 ? 0 : draggable_postit_counter * 350)
+ z_index = 0
+else
+  top = postit.position.top
+  left = postit.position.left
+  z_index = postit.position.z_index
+end
+%>
+
+<% if false #postit.position.nil? %> 
+	$(".draggable[note_id='<%= postit.id %>']").css('position','relative');
+<% end %>
+
+
+$(function() {
+	var obj = $("draggable[note_id='<%= postit.id %>']");
+	var top = <%= top %>;
+	obj.addClass('rotate-3');
+	/*
+	if (top+obj.height()>obj.parent().height()) {
+		alert('top: '+top+', parent_height: '+obj.parent().height()+', obj_height: '+obj.height());
+		top = obj.parent().height()-obj.height();
+	}
+	*/
+	obj.position({ top: top, left: <%= left %>});
+	obj.css("z-index", "<%= z_index %>");
+});
+</script>

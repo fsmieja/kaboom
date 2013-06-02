@@ -1,0 +1,35 @@
+<% postit = draggable_postit %>
+<div  note_id="<%= postit.id %>" class="draggable">
+	<div  class="postit" >
+		<b><%= postit.title %></b><br/><%= postit.content %>
+		<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
+		<div class="price-tagged"><ul class="price-tag"><li><a class="price-tag-link">Tagged</a></li></ul></div>
+	</div>
+</div>
+<script>
+<% 
+sel = ".draggable[note_id='#{postit.id}']".html_safe
+
+#if postit.position.nil? 	
+ top = 20 + (draggable_postit_counter / 3 * 350)
+# top += 40 if draggable_postit_counter == 0
+ left = 50 + (draggable_postit_counter % 3==0 ? 0 : draggable_postit_counter * 450)
+ z_index = 0
+#else
+#  top = postit.position.top
+#  left = postit.position.left
+#  z_index = postit.position.z_index
+#end
+%>
+
+<% if postit.position.nil? %> 
+	$(".draggable[note_id='<%= postit.id %>']").css('position','relative');
+<% end %>
+
+
+$(function() {
+	$("<%= sel %>").addClass('rotate-3');
+	$("<%= sel %>").offset({ top: <%= top %>, left: <%= left %>});
+	//$("<%= sel %>").css("z-index", "<%= z_index %>");
+});
+</script>

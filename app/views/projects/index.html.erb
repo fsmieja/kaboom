@@ -1,0 +1,14 @@
+<h2>Projects</h2>
+<table class="url-list sortable">
+	<tr>
+		<th>Name</th>
+		<th>Created</th>
+		<th>Updated</th>
+		<th># Notes</th>
+		<th># Tags</th>
+	</tr>
+<%= render @projects %>
+</table>
+
+<%= button_to 'Create new project', new_project_path,  :method => 'get'%>
+

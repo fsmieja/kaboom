@@ -1,0 +1,31 @@
+
+<p>
+  <b>Name:</b>
+  <%= @project.name %>
+</p>
+<p>
+  <b>Summary:</b>
+  <%= @project.summary %>
+</p>
+<p>
+  <b>Description:</b>
+  <%= @project.description %>
+</p>
+<p>
+  <b>Created:</b>
+  <%= @project.created_at %>
+</p>
+<p>
+  <b>Last updated:</b>
+  <%= @project.updated_at %>
+</p>
+<p>
+  <b>Notes:</b>
+  <%= link_to(@num_notes, project_notes_path(@project.id)) %> 
+</p>
+<p>
+  <b>Tags:</b>
+  <%= link_to(@num_tags, project_tags_path(@project.id)) %> 
+</p>
+<%= link_to "Pretty", project_path({ id: @project.id, pretty: true})%> |
+<%= link_to 'All Projects', projects_path %>

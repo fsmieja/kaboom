@@ -1,0 +1,6 @@
+<%= form_for note, :url => add_note_to_note_path, :remote => true do |f| %>
+	<%= f.label :title %><%= f.text_field :title %><br/>
+	<%= f.text_area :content, :class => "add-comment" %><br/>
+	<%= f.submit "Add note to this" %>
+	<%= hidden_field_tag "id", note_id %>
+<% end %>

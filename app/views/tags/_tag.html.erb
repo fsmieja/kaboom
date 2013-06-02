@@ -1,0 +1,11 @@
+<tr>
+	<% if orphan %>
+		<td><%= check_box_tag "tag_ids[]", tag.id, false %></td>
+		<td><%= link_to tag.name, tag_path(tag) %></td>
+	<% else %>
+		<td><%= link_to tag.name, tag_path(tag) %></td>
+		<td><%= tag.messages.count+tag.comments.count %></td>
+		<td><%= tag.created_at.to_formatted_s(:long) %></td>		
+		<td><%= tag.last_used_at.to_formatted_s(:long) if !tag.last_used_at.nil? %></td>		
+	<% end %>
+</tr>

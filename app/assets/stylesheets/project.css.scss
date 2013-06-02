@@ -1,0 +1,35 @@
+// Place all the styles related to the project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+table.list {
+  margin-top: 1em;
+
+  tr {
+    height: 40px;
+    
+    td.url {
+      border-top: 1px solid #ccc;
+      vertical-align: top;
+      padding-top: 10px;
+      background: none;
+    
+      span.timestamp {
+        display: block;
+        font-size: 85%;
+        color: #666;
+      }
+    }
+  }
+}
+div.expand-full-screen {
+  float: right;
+  //position: absolute;
+  z-index: 20;
+}
+
+div.notes-small {
+  border: 2px solid gray;
+  overflow: auto;
+  max-height: 400px;
+}

@@ -1,0 +1,10 @@
+Tags for note "<%= link_to @note.title, note_path(@note) %>", project "<%= link_to @note.project.name, project_path(@note.project) %>
+  
+
+<%= render 'tags/tag_list', :tags => @tags, :id => @note.id, :controller => "notes"%>
+  
+
+
+</p>
+<%= render 'tags/add_tag', :id => @note.id, :resource => "note", :all_tags => @all_tags %>
+

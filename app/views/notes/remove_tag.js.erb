@@ -1,0 +1,7 @@
+<% if @removed %>
+	$('#tag-header').text('Tags (<%= @tags.count %>)');
+	$('#tag-header').effect("bounce", {});
+	$('#<%= @remove_tag %>').remove();
+<% else %>
+  alert('<%= @tag_message %>');
+<% end %>

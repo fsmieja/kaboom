@@ -1,0 +1,36 @@
+
+<table class="url-list sortable">
+	<tr>
+		<th>Project</th>
+		<th>Number of times</th>
+	</tr>	
+	<% projects.each do |p| %>
+	<tr>
+		<td><%= p.name %></td>
+		<td><%= project_numbers[:project_id => p.id] %></td>
+	</tr>
+	<% end %>
+</table>
+
+<% if notes.any? %>
+
+
+<table class="url-list sortable">
+	<tr>
+		<th>Project</th>
+		<th>Note Title</th>
+		<th>Note Content</th>
+	</tr>	
+	<% notes.each do |m| %>
+	<tr>
+	<%
+		 stripped_m = strip_tags(m.content.gsub(/&nbsp;/i," ").gsub(/<div class=\"paragraph\_break\"/i,"&#013; &#010;<div ")) 
+		 summary = raw stripped_m.size<=100 ? stripped_m : "#{stripped_m[0..100]}..."
+	%> 
+		<td><%= m.project.name %></td>
+		<td><%= link_to m.title, note_path(m.id) %></td>
+		<td><%= summary %></td>
+	</tr>
+	<% end %>
+</table>
+<% end %>

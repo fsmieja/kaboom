@@ -1,0 +1,166 @@
+$fold-tab: 20px;
+$column-width: 200px;
+$recover-color: #5c0;
+$alert-color: red;
+
+@mixin fold {
+    cursor: pointer;
+    padding: 5px;
+    color: black;
+    text-decoration: underline;
+}
+
+@mixin alerttype($color: red) {
+    max-width: 200px;
+    float: right;
+    font-size: $small-font-size;
+    font-weight: bold;
+    line-height: 100%;
+    background: beige;
+    padding: 3px;
+    color: $color;  
+    border: 2px solid $color;
+
+}
+
+@mixin newstype($color: red, $background: pink) {
+    line-height: 150%;
+    padding: 3px;
+    border: 2px solid $color;
+    background: $background;
+    color: $color;
+    text-decoration: none;
+}
+
+
+
+a.alert-link {
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }  
+}
+
+a.linkalert {
+  float: right;
+  line-height: 100%;
+}
+form.new_url {
+   margin-bottom: 2em;
+
+  textarea {
+    height: 4em;
+    margin-bottom: 0;
+  }
+}
+
+div.monthfold {
+    @include fold;
+    background: #806a50;
+}
+
+div.dayfold {
+    @include fold;
+    background: lightyellow;
+    margin-left: $fold-tab;
+}
+
+div.folded {
+    margin-left: $fold-tab*2;
+}
+
+
+td.stat-hour {
+    font-style: italic;
+    margin-left: $fold-tab;
+} 
+
+td.stat-time {
+    width: $column-width;
+}
+
+td.stat-error {
+    color: $alert-color;
+    width: $column-width;
+}
+
+td.stat-size {
+    flush: right;
+}
+
+
+table.date-filter {
+    font-size: $standard-font-size;
+
+    tr {
+      td {
+        background: none;
+      }
+    }
+  
+}
+
+span.alert {
+    @include alerttype($alert-color);
+}
+
+div.news {
+    @include newstype($alert-color);
+}
+span.recovered {
+    @include alerttype($recover-color);
+    border: 2px dashed lightgreen;
+}
+
+
+div.url-message {
+    line-height: 110%;
+    padding: 3px;
+    border: 2px solid purple;
+    background: lightgray;
+    color: purple;
+  }
+
+div.alert-news {
+    @include newstype(red, pink);
+}
+  
+div.bad-news {
+    @include newstype(orange, #ffa);
+}
+
+div.good-news {
+    @include newstype(darkgreen, #0e6);
+}
+
+a.good-news {
+  @include newstype(darkgreen, #0e6);
+  border: none;
+}
+
+a.bad-news {
+    @include newstype(orange, #ffa);
+  border: none;
+}
+
+a.alert-news {
+    @include newstype(red, pink);
+  border: none;
+}
+
+
+table.url-list {
+
+  border-collapse: collapse;
+  
+ tr {
+      //background-color: #eee;
+    border: 1px solid #aaa;    
+    td {
+        //border: 1px solid #aaa;
+      padding-left: 10px;
+    }
+  }
+}
+
+

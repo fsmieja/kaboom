@@ -1,0 +1,84 @@
+$mega-font-size:      36px;
+$super-font-size:     28px;
+$huge-font-size:      22px;
+$large-font-size:     18px;
+$medium-font-size:    16px;
+$standard-font-size:  14px;
+$small-font-size:     12px;
+$tiny-font-size:      10px;
+
+$background-color:    white;
+$disabled-color:      lightgray;
+$tag-label-color:     #fea500;
+$highlight-background-color: #99FF33; 
+$highlight-foreground-color: #0000ff; 
+$urlpoke-brown:       #666aaa;
+
+$round-corner-size:   14px;
+$half-round-corner-size: 10px;
+$half-width:          550px;
+$full-width:          950px;
+$tab-width:           980px;
+
+$message-box-height: 200px;
+$comment-box-height: 200px;
+$add-comment-box-height: 50px;
+
+@mixin rotate($angle: 3deg) {
+
+  -webkit-transform: rotate(-$angle);
+  -moz-transform: rotate(-$angle);
+  -o-transform: rotate(-$angle);
+}
+
+@mixin rounded-corners($radius: 14px) {
+    -moz-border-radius: $radius;
+    -webkit-border-radius: $radius;
+    border-radius: $radius;
+}
+
+@mixin rounded-right-edge($radius: 2px) {
+      -webkit-border-top-right-radius: $radius;
+      -webkit-border-bottom-right-radius: $radius;
+      -moz-border-radius-topright: $radius;
+      -moz-border-radius-bottomright: $radius;
+      border-top-right-radius: $radius;
+      border-bottom-right-radius: $radius;
+
+}
+@mixin rounded-top-corners {
+      -moz-border-radius-topleft: $half-round-corner-size;
+    -moz-border-radius-topright: $half-round-corner-size;
+    -webkit-border-radius-topleft: $half-round-corner-size;
+    -webkit-border-radius-topright: $half-round-corner-size;
+    border-top-left-radius: $half-round-corner-size;
+    border-top-right-radius: $half-round-corner-size; 
+
+}
+
+@mixin friendly-button($font-size: $standard-font-size,$padding: 5px) {
+  color: #fff;
+  background: #FF7F24;
+  font-size: $font-size;
+  font-weight: bold;
+  padding: $padding $padding $padding $padding; 
+  text-decoration: none;
+  @include rounded-corners;
+
+  &:hover {
+    background: #dd5d02;
+  }
+}
+@mixin big-friendly-button {
+  color: #fff;
+  background: #FF7F24;
+  font-size: $large-font-size;
+  font-weight: bold;
+  padding: 10px 10px 10px 10px;
+  text-decoration: none;
+  @include rounded-corners;
+
+  &:hover {
+    background: #dd5d02;
+  }
+}
