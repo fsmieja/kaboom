@@ -11,13 +11,23 @@ class NotesController < ApplicationController
     @project.add_tag_numbers(@tag_numbers)    
     @tags = (@project.tags + @project.note_tags).uniq
     if params[:pretty]
-      @notes = @project.notes.order("created_at desc")
-      render :pretty_index, layout: 'note_table'
+      @notes = @project.notes.order("created_at asc")
+      render :notes_table, layout: 'note_table'
     else
       @per_page = params[:per_page] ||  20
       order_str = sort_column + " "  + sort_direction
       @notes = @project.notes.order(order_str).page(params[:page]).per_page(@per_page)
     end
+  end
+    
+  def divide
+      @project = Project.find(params[:id])    
+      #@tag = Tag.find(params[:tag_id])
+      @tag = Tag.find(8)
+      @notes_with_tag = @tag.notes#.order("created_at asc")
+      @notes_without_tag = @project.notes - @notes_with_tag
+      puts "count = #{@notes_with_tag.count}"
+      render :divide_and_conquer, layout: 'note_table'
   end
   
   def tags
@@ -87,6 +97,24 @@ class NotesController < ApplicationController
     position.z_index = max_z+1
     position.save!
     render nothing: true
+  end
+  
+  def toggle_tag
+    @note = Note.find(params[:target_note_id])        
+    @tag = Tag.find(params[:tag_id])
+    if @note.tags.include?(@tag)
+      @note.tags.delete(@tag)
+      @result = "removed"
+    else
+      @note.tags << @tag
+      @result = "added"
+    end
+    @tag_str=render_to_string(partial: 'notes/tagged_icon', locals: {note_id: @note.id, num_tags: @note.tags.count}, :layout => false)
+    @tag_str = @tag_str.html_safe.gsub("\n"," ") if !@tag_str.nil?
+    puts @tag_str
+    respond_to do |format|
+      format.js
+    end
   end
   
   def tag

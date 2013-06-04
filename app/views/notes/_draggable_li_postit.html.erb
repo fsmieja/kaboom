@@ -1,0 +1,23 @@
+<li class="anything" style="list-style-type: none; margin: 0; padding: 0; display: inline" note_id="<%= postit.id %>">
+	<div  class="postit" >
+		<b><%= postit.title %></b><br/><%= postit.content %>
+		<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
+		<% if postit.tags.count>0 %>
+			<div class="tagged-icon">
+				<table><tr>
+					<td><%= link_to image_tag('tagged.png', size: "25x25"), note_tags_path(postit), title: "This note has been tagged #{pluralize(postit.tags.count,"time")}" %></td>
+					<td ><%= postit.tags.count %></td>
+				</tr></table>
+			</div>
+		<% end %> 
+	</div>
+</li>
+<script>
+
+$(function() {	
+	var obj = $(".anything[note_id='<%= postit.id %>']");
+	//alert('obj: '+obj.attr("note_id"));
+	obj.appendTo("<%= table %>");
+//	obj.addClass('rotate-3');
+});
+</script>

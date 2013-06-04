@@ -1,0 +1,6 @@
+<% if num_tags>0 %>
+	<table id="tag_tag_<%= note_id %>"><tr>
+		<td><%= link_to image_tag('tagged.png', size: "25x25"), note_tags_path(note_id), title: "This note has been tagged #{pluralize(num_tags,"time")}" %></td>
+		<td ><%= num_tags %></td>
+	</tr></table>
+<% end %> 

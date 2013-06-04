@@ -159,14 +159,17 @@ div.square {
   background: lightgreen;
   position: relative;
   border: 5px solid brown;
-  height: 500px;
+  height: 700px;
   width: 1500px;
-  resize: both;
+  margin-left: auto;
+  margin-right: auto;
+  
+  //resize: both;
   //overflow: auto;
   //z-index: 0; 
 }
 
-.divide-table-target {
+.divide-table {
   background: lightblue;
   position: relative;
   border: 5px solid blue;
@@ -175,10 +178,7 @@ div.square {
   //z-index: 0; 
 }
 
-.divide-table-source {
-  background: lightblue;
-  position: relative;
-  border: 5px dashed blue;
-  height: 700px;
-  //z-index: 0; 
+.ui-draggable-helper {
+  border: 1px dotted #000;
+  opacity: 50%;
 }

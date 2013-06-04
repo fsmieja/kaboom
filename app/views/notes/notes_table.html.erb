@@ -1,0 +1,13 @@
+<h1>Notes for Project '<%=@project.name%>'</h1>
+<p></p>
+
+<div id="table" class="note-table">
+	<div class="expand-full-screen"><%= link_to(image_tag("fullscreen-close.png", size: "25x25"), project_path({id: @project, pretty: true})) %></div>			
+	<%= render "notes/arrange_notes_on_table", notes: @notes, table: "#table", table_height: 700, table_width: 1500, postit_height: 276, postit_width: 297 %>
+</div>
+
+<%= button_to "Create Note", new_project_note_path(@project.id), :method => 'get' %>
+<%= button_to "Divide and Conquer", divide_notes_path(@project.id), :method => 'get' %>
+<%= link_to "Project", project_path(@project)%>
+
+<%= render 'notes/drag_and_save', confine_to: "#table"  %>

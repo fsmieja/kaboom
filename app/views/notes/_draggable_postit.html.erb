@@ -1,49 +1,30 @@
-<% postit = draggable_postit %>
 <div  note_id="<%= postit.id %>" class="draggable">
 	<div  class="postit" >
 		<b><%= postit.title %></b><br/><%= postit.content %>
 		<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
-		<% if postit.tags.count>0 %>
-			<div class="tagged-icon">
-				<table><tr>
-					<td><%= link_to image_tag('tagged.png', size: "25x25"), note_tags_path(postit), title: "This note has been tagged #{postit.tags.count} times" %></td>
-					<td ><%= postit.tags.count %></td>
-				</tr></table>
-			</div>
-		<% end %> 
+		<div class="tagged-icon">
+			<%= render 'notes/tagged_icon', note_id: postit.id, num_tags: postit.tags.count %>
+		</div>
 	</div>
 </div>
 <script>
-<% 
-
-if postit.position.nil? 	
- top = 20 + (draggable_postit_counter / 3 * 350)
-# top += 40 if draggable_postit_counter == 0
- left = 50 + (draggable_postit_counter % 3==0 ? 0 : draggable_postit_counter * 350)
- z_index = 0
-else
-  top = postit.position.top
-  left = postit.position.left
-  z_index = postit.position.z_index
-end
-%>
-
-<% if false #postit.position.nil? %> 
-	$(".draggable[note_id='<%= postit.id %>']").css('position','relative');
-<% end %>
-
 
 $(function() {
-	var obj = $("draggable[note_id='<%= postit.id %>']");
-	var top = <%= top %>;
+	
+	var table_border_top = parseInt($("<%= table %>").css("borderTopWidth"), 10); 
+	var table_border_left = parseInt($("<%= table %>").css("borderLeftWidth"), 10); 
+	var obj = $(".draggable[note_id='<%= postit.id %>']");
+	//alert('border: '+table_border_top+','+table_border_left);
+	var top = <%= top %>+table_border_top;		/* adding on the margin of the table */
+	var left = <%= left %>+table_border_left;
+	obj.appendTo("<%= table %>");
+	obj.position({
+		my: "left top",
+		at: 'left+'+left+' top+'+top,   
+		of: "<%= table %>"
+	});
+	//alert('top: '+top+', left: '+left);
 	obj.addClass('rotate-3');
-	/*
-	if (top+obj.height()>obj.parent().height()) {
-		alert('top: '+top+', parent_height: '+obj.parent().height()+', obj_height: '+obj.height());
-		top = obj.parent().height()-obj.height();
-	}
-	*/
-	obj.position({ top: top, left: <%= left %>});
 	obj.css("z-index", "<%= z_index %>");
 });
 </script>

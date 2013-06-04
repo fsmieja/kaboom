@@ -9,11 +9,13 @@ Kaboom::Application.routes.draw do
   match 'project/:id/notes'     => 'notes#index', as: :project_notes, via: :get 
   match 'note/:id/tags'         => 'notes#tags', as: :note_tags, via: :get 
   match 'note/:id/add_tag'      => 'notes#tag', as: :tag_note, via: :put 
+  match 'note/:id/toggle_tag'   => 'notes#toggle_tag', as: :toggle_tag_note, via: :put 
   match 'note/:id/create_tag'   => 'notes#create_tag', as: :create_tag_note 
   match 'note/:id/remove_tag'   => 'notes#remove_tag', as: :remove_tag_from_note, via: :post 
   match 'note/:id/add_note'     => 'notes#add_note', as: :add_note_to_note, via: :put 
   match 'note/set_position'     => 'notes#set_position', as: :note_position, via: :put 
   match 'project/:id/note/new'  => 'notes#new', as: :new_project_note, via: :get 
+  match 'project/:id/divide'    => 'notes#divide', as: :divide_notes, via: :get 
   
   match 'project/:id/add_tag'   => 'projects#tag', as: :tag_project, via: :put   
   
