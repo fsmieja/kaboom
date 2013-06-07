@@ -1,0 +1,17 @@
+<% if id %>
+ <div	id="<%= id %>" class="rotate-3">
+<% else %>
+ <div	class="rotate-3">
+<% end %>
+		<div  class="postit" >
+			<b><%= postit.title %></b><br/><%= postit.content %>
+			<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
+		<div class="tagged-icon">
+			<%= render 'notes/tagged_icon', note_id: postit.id, num_tags: postit.tags.count %>
+		</div>
+			<!--
+			<i class="pin"></i>
+			<div class="price-tagged"><ul class="price-tag"><li><a class="price-tag-link">Tagged</a></li></ul></div>
+			-->
+		</div>
+	</div>				  	

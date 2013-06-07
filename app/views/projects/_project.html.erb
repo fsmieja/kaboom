@@ -1,6 +1,6 @@
 
 <tr>
-	<td><%= link_to(project.name, project_path(project)) %></td>
+	<td><%= link_to(project.name, project_path({id: project, pretty: true})) %></td>
 	<td><%= project.created_at.to_formatted_s(:long) %></td>
 	<td><%= project.updated_at.to_formatted_s(:long) %></td>
 	<td><%= project.notes.count %></td>

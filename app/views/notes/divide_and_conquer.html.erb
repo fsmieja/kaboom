@@ -1,22 +1,31 @@
 <h1>Divide and Conquer</h1>
 <p></p>
 
-
-<div id="table" class="note-table">
-	<table>
-		<tr>
-			<td><div id="source" class="divide-table"></div></td>
-			<td><div id="target" class="divide-table"></div></td>
-		</tr>
-	</table>
+<div class="full-table">
+	<div class="divide">
+		<%= form_tag divide_notes_path(@project.id), method: :get do %>
+			<%= text_field_tag 'category' %>
+			<%= submit_tag "Divide and Conquer" %>
+		<% end %>
+	</div>
+	<div class="category-name">Category "<%= @tag.name %>"</div>
+	<div id="table" class="note-table">
+		<table style="spacing: 0">
+				<tr>
+				<td style="padding: 0"><div id="source" class="divide-table"></div></td>
+				<td style="padding: 0"><div id="target" class="divide-table"></div></td>
+			</tr>
+		</table>
+	</div>
 </div>
+
 <%
-	table_height = 700
+	table_height = 710
 	table_width = 1500
 	postit_height = 276
 	postit_width = 297	
-	divide_height = table_height-30
-	divide_width = table_width/2-30
+	divide_height = table_height-3
+	divide_width = table_width/2-3
 	max_top = divide_height-postit_height
 	max_left = divide_width-postit_width
 %>
@@ -24,6 +33,7 @@
 <%= render "notes/arrange_notes_on_table", notes: @notes_with_tag, table: "#target", table_height: divide_height, table_width: divide_width, postit_height: postit_height, postit_width: postit_width %>					
 <%= render "notes/arrange_notes_on_table", notes: @notes_without_tag, table: "#source", table_height: divide_height, table_width: divide_width, postit_height: postit_height, postit_width: postit_width %>
 
+<%= render 'tags/add_tag', :id => -1, :resource => "note", :all_tags => @all_tags %>
 
 <%= form_tag toggle_tag_note_path, remote: true, id: "tag_form", method: :put do %>
 <%= hidden_field_tag "target_note_id" %>
@@ -83,8 +93,11 @@ function setNewPositionLeft(obj,helper_pos,table_pos) {
 
 
 $(function() {
-	$("#table").css("height", "<%= table_height %>");
-	$("#table").css("width", "<%= table_width %>");
+
+  $("#table").css("height", "<%= table_height %>");
+  $("#table").css("width", "<%= table_width %>");
+  $("#source").css("background", "red");
+  $("#target").css("background", "green");
 
   $(".draggable").draggable({
   	//cursor: "crosshair",

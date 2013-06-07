@@ -1,6 +1,6 @@
 <div class="tagcloud" id="tagcloud">
 	<% tags.each do |t| %>
-		<%= link_to t.name, tag_path(t.id), { :rel => tag_numbers[:tag_id => t.id] }%>
+		<%= link_to t.name, mindmap_path(t.id), { :rel => tag_numbers[:tag_id => t.id] }%>
 	<% end %>
 </div>
 

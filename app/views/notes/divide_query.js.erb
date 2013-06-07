@@ -1,0 +1,17 @@
+<% if @result=="added" %>
+	<% if @note.tags.count > 1%>
+		$("#tag_tag_<%= @note.id %>").remove();
+	<% end %>
+<% else %>
+	$("#tag_tag_<%= @note.id %>").remove();
+<% end %>
+
+var obj = $(".draggable[note_id='<%= @note.id %>'] .tagged-icon");
+<% if !@tag_str.nil? %>
+	var tag = '<%= raw @tag_str %>';
+	obj.append(tag);
+<% end %>
+
+$(".draggable").each(function(){
+	var note_id = 
+})

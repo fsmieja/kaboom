@@ -28,4 +28,19 @@ class Tag < ActiveRecord::Base
     end
     return Tag.find_or_create_by_name(tag_name)
   end
+
+  def get_node_tags(exc=[])
+    node_tags = []
+    notes.each do |n| 
+      n.tags.each do |t|
+        if t!=self && !node_tags.include?(t) && !exc.include?(t)
+          node_tags << t
+        end
+      end
+    end
+    node_tags
+  end  
+  private
+  
+
 end

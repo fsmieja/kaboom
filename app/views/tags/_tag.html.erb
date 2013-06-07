@@ -1,11 +1,20 @@
+<% 
+most_recent = Time.now()-10.years
+tag.note_taggings.each do |nt|
+	if nt.updated_at>most_recent
+		most_recent = nt.updated_at
+	end
+end
+%>
+
 <tr>
 	<% if orphan %>
 		<td><%= check_box_tag "tag_ids[]", tag.id, false %></td>
 		<td><%= link_to tag.name, tag_path(tag) %></td>
 	<% else %>
 		<td><%= link_to tag.name, tag_path(tag) %></td>
-		<td><%= tag.messages.count+tag.comments.count %></td>
+		<td><%= tag.notes.count %></td>
 		<td><%= tag.created_at.to_formatted_s(:long) %></td>		
-		<td><%= tag.last_used_at.to_formatted_s(:long) if !tag.last_used_at.nil? %></td>		
+		<td><%= most_recent.to_formatted_s(:long)  %></td>		
 	<% end %>
 </tr>

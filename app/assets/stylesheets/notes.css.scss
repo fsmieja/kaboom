@@ -155,14 +155,26 @@ div.square {
   }
 }
 
-.note-table {
-  background: lightgreen;
+.full-table {
+  background: teal;
   position: relative;
   border: 5px solid brown;
-  height: 700px;
-  width: 1500px;
+  height: 750px;
+  width: 1505px;
   margin-left: auto;
   margin-right: auto;
+  
+  //resize: both;
+  //overflow: auto;
+  //z-index: 0; 
+}
+.note-table {
+  background: lightgreen;
+  position: absolute;
+  bottom: 0px;
+  border: 2px solid brown;
+  height: 750px;
+  width: 1450px;
   
   //resize: both;
   //overflow: auto;
@@ -172,7 +184,7 @@ div.square {
 .divide-table {
   background: lightblue;
   position: relative;
-  border: 5px solid blue;
+  border: 2px solid blue;
   height: 700px;
   //display: none;
   //z-index: 0; 
@@ -181,4 +193,27 @@ div.square {
 .ui-draggable-helper {
   border: 1px dotted #000;
   opacity: 50%;
+}
+
+div.slide-open {
+  width: 15px;
+  height: 30px;
+  position: absolute;
+  right: 0px;
+  top: 350px;
+  cursor: pointer;
+  @include stripes($background: black);  
+}
+
+div.divide {
+  background: lightgray;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+div.category-name {
+  position: absolute;
+  right: 300px;
+  font-size: $huge-font-size;
+  color: white;  
 }

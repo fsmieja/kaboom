@@ -16,4 +16,6 @@
 //= require jquery.tagcloud
 //= require jquery-ui-1.10.3.custom
 //= require tabs
+//= require raphael-min
+//= require js-mindmap
 

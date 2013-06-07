@@ -1,13 +1,46 @@
 <h1>Notes for Project '<%=@project.name%>'</h1>
 <p></p>
 
-<div id="table" class="note-table">
+<div class="full-table">
+	<div class="divide">
+		<%= form_tag divide_notes_path(@project.id), method: :get do %>
+			<%= text_field_tag 'category' %>
+			<%= submit_tag "Divide and Conquer" %>
+		<% end %>
+	</div>
 	<div class="expand-full-screen"><%= link_to(image_tag("fullscreen-close.png", size: "25x25"), project_path({id: @project, pretty: true})) %></div>			
-	<%= render "notes/arrange_notes_on_table", notes: @notes, table: "#table", table_height: 700, table_width: 1500, postit_height: 276, postit_width: 297 %>
+	<div id="table" class="note-table"></div>
 </div>
 
+<%= render "notes/arrange_notes_on_table", notes: @notes, table: "#table", table_height: 710, table_width: 1500, postit_height: 276, postit_width: 297 %>
+
+<script>
+//$(function(){
+	//$("#target").css("width","725");
+	//$("#target").hide();
+	//var hidden = true;
+	//$(".slide-open").click(function() {
+		//location.href='<%= divide_notes_path(@project.id) %>';
+		/*
+        if(hidden){
+        	$("#source").effect( "size", {to: { width: 725 }, scale: "box"}, 1000, function(){
+        		
+        		$("#target").toggle( "slide", {direction: "left"}, 1000);
+            	//$("#target").effect( "size", {to: { width: 725 }, scale: "box", origin: "left"}, 1000 );
+          });
+        }
+        else {
+        	$("#source").effect( "size", {to: { width: 1450 }, scale: "box"}, 1000 );
+            $("#target").effect( "size", {to: { width: 2 }, scale: "box"}, 1000 );
+			$("#target").hide();
+        }
+        hidden = !hidden;
+        */
+   //});
+
+//});
+</script>
 <%= button_to "Create Note", new_project_note_path(@project.id), :method => 'get' %>
-<%= button_to "Divide and Conquer", divide_notes_path(@project.id), :method => 'get' %>
 <%= link_to "Project", project_path(@project)%>
 
 <%= render 'notes/drag_and_save', confine_to: "#table"  %>

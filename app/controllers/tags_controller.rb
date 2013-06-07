@@ -20,6 +20,17 @@ class TagsController < ApplicationController
      end 
   end
   
+  def mindmap
+    #@project = Project.find(params[:id])
+    tag_id = params[:id]
+    #if !tag_id
+    #  tag_id = @project.notes[0].tags[0] 
+    #end
+    @tag = Tag.find(tag_id)
+    @neighbour_tags = @tag.get_node_tags
+    @depth = 2
+  end
+  
   def destroy
     tag = Tag.find(params[:id])
     @id = params[:id]

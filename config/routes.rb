@@ -4,6 +4,8 @@ Kaboom::Application.routes.draw do
 
   root :to => 'projects#index'
 
+  match 'tags/delete_all'       => 'tags#delete_all', as: :delete_all_tags, via: :put 
+
   resources :projects, :notes, :tags
 
   match 'project/:id/notes'     => 'notes#index', as: :project_notes, via: :get 
@@ -20,6 +22,7 @@ Kaboom::Application.routes.draw do
   match 'project/:id/add_tag'   => 'projects#tag', as: :tag_project, via: :put   
   
   match 'project/:id/tags'      => 'tags#index', as: :project_tags, via: :get 
+  match 'tag/:id/mindmap'       => 'tags#mindmap', as: :mindmap, via: :get 
    
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'

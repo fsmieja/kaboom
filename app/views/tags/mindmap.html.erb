@@ -1,0 +1,147 @@
+<%= link_to "Back to Project", project_path({id: @tag.notes[0].project, pretty: true})%>
+<div class="mindmap" id="mindmap">
+  <ul>
+    <li><%= link_to @tag.name, mindmap_path(@tag) %>
+      <ul>
+      	<% @neighbour_tags.each do |t| %>
+        <li>
+        	<% next_tags = t.get_node_tags([@tag])
+        	   name = next_tags.count>0 ? "#{t.name} (+#{next_tags.count})" : t.name 
+        	%>
+        	<%= link_to name, mindmap_path(t)  %>
+        	<% if @depth == 2 %>
+	        	<ul>
+   		      	<% t.notes.each do |n| %>
+        		  <li>
+        		  	<% this_id = "leaf_#{t.id}_#{n.id}" %>
+        			<%= link_to n.title, note_path(n), id: this_id  %>
+        	  	  </li>
+       			<% end %>
+        		</ul>
+        	<% end %>
+       	</li>
+       	<% end %>
+      </ul>
+    </li>
+  </ul>
+</div>
+<% @neighbour_tags.each do |t| %>
+  	<% if @depth == 2 %>
+     	<% t.notes.each do |n| %>
+   		  	<% this_id = "note_#{t.id}_#{n.id}" %>
+		 	<%= render "notes/postit_div", id: this_id, postit: n %>
+		<% end %>
+   	<% end %>
+<% end %>
+ 
+
+<script>
+// load the mindmap
+$(document).ready(function() {
+
+		var z_index = 200;
+	$(".rotate-3").hide();
+  // enable the mindmap in the body
+  var mindmapObj = $('#mindmap');	 
+  mindmapObj.mindmap({
+	box: {
+		x0: 0,//mindmapObj.position().left,
+		y0: 0,//mindmapObj.position().top,
+		dx: mindmapObj.width(),
+		dy: mindmapObj.height()
+	},
+    centreOffset: 0
+     
+
+  });
+	
+	// add the data to the mindmap
+  var rootNode = $('#mindmap>ul>li').eq(0);
+  mynode = mindmapObj.addRootNode(rootNode.find('>a').text(), {
+    href:'/',
+    url:'/',
+    onclick:function(node) {
+      $(node.obj.activeNode.content).each(function() {
+        this.hide();
+      });
+    }
+  });
+  var root = rootNode.get(0).mynode = mynode;
+  rootNode.hide();
+  
+  var addLI = function() {
+    var parentnode = $(this).parents('li').get(0);
+    if (typeof(parentnode)=='undefined') {
+    	parentnode=root;
+    }
+    else {
+    	parentnode=parentnode.mynode;
+    }
+    var content=null;
+    var noteObj = null;
+    if ($(this).parent() && parentnode != root && $(this).parent().parent()) {
+    	var parent_id = $(parentnode).attr("href").split(/\//)[2];
+    	var my_id = $(this).find('>a:eq(0)').attr("href").split(/\//)[2];
+    	noteObj = $('#note_'+parent_id+'_'+my_id);
+    }
+    this.mynode = mindmapObj.addNode(parentnode, $(this).find('>a:eq(0)').text(), {
+      href:$('a:eq(0)',this).attr('href'),
+      /*
+      onclick:function(node) {
+        $(node.obj.activeNode.content).each(function() {
+          //this.hide();
+        });
+        $(node.content).each(function() {
+          this.show();
+        });
+      }	,
+      */
+      onhover:function(node) {
+      	  var reveal = node.el.find('.reveal');
+      	
+      	  reveal.show();
+      	  reveal.position({
+      		my: "right bottom",
+      		at: "right top",
+      		of: node.el.find('>a')
+      	  });
+      },
+      onleave:function(node) {
+        var reveal = node.el.find('.reveal');
+	   	if (node.revealObj!=null && !$(node.revealObj[0]).is(":visible")) {
+          reveal.hide();
+        }
+      },
+      onreveal:function(node,rev,e) {
+      	if (node.revealObj==null) {
+      		return false;
+      	}
+      	
+        $(node.revealObj).each(function() {
+        	z_index += 1;
+            this.css("position","absolute");
+          	this.toggle();
+            this.css("z-index",z_index);
+            this.position({my: "left bottom", of: e});
+         });
+                  
+         return false;
+       
+      },
+
+	  revealObj: [noteObj],
+      content: [content]
+    });
+    $(this).hide();
+    $('>ul>li', this).each(addLI);
+  };
+  
+  
+  rootNode.find('>ul').each(function() { 
+    $('>li', this).each(addLI);
+  });
+
+});   
+
+
+</script>

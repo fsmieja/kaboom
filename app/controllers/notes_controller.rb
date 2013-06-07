@@ -21,13 +21,26 @@ class NotesController < ApplicationController
   end
     
   def divide
+      @project = Project.find(params[:id])  
+      tag_name = params[:category]
+      tag = Tag.find_by_name(tag_name)
+      if tag.nil?
+        tag = Tag.new({name: params[:category]})
+        tag.save!
+      end  
+      @tag = tag
+      @notes_with_tag = @tag.notes
+      @notes_without_tag = @project.notes - @notes_with_tag
+      @all_tags = (@project.tags + @project.note_tags).uniq
+      render :divide_and_conquer, layout: 'note_table'
+  end
+
+  def divide_query
       @project = Project.find(params[:id])    
       #@tag = Tag.find(params[:tag_id])
       @tag = Tag.find(8)
-      @notes_with_tag = @tag.notes#.order("created_at asc")
+      @notes_with_tag = @tag.notes
       @notes_without_tag = @project.notes - @notes_with_tag
-      puts "count = #{@notes_with_tag.count}"
-      render :divide_and_conquer, layout: 'note_table'
   end
   
   def tags
