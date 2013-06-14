@@ -1,8 +1,6 @@
 	<li id="<%= tag.id %>">
 		<% if !tag.nil? %>
 			<%= link_to tag.name, tag_path(tag.id), class: "price-tag-link" %>
-			<% if controller=="notes"%>
-				<%= link_to "X", {controller: controller, action: :remove_tag, tag_id: tag.id}, {method: :post, id: "popup-#{tag.id}", class: "popup", remote: true }%>
-			<% end %>
+			<%= link_to "X", {controller: controller, action: :remove_tag, tag_id: tag.id}, {method: :post, id: "popup-#{tag.id}", class: "popup", remote: true }%>
 		<% end %>
 	</li>	

@@ -67,20 +67,21 @@
 	this.id = opts.id;
     this.name = name;
     this.href = opts.href;
+    this.title = opts.title;
     if (opts.url) {
       this.url = opts.url;
     }
 
     // create the element for display
     if (parent && parent.parent) { // i am a leaf
-    	var leaf = '<div>';
-    	leaf +=        '<a href="' + this.href + '" class="leaf">' + this.name + '</a>';
+    	var leaf = '<div class="boo">';
+    	leaf +=        '<a href="' + this.href + '" class="leaf" title="'+ this.title + '">' + this.name + '</a>';
     	leaf +=        '<a class="reveal" href="#" title="Click to view the note">view note</a>';
     	leaf +=    '</div>';
 	  	this.el = $(leaf);
     } 
     else {
-	  this.el = $('<a href="' + this.href + '">' + this.name + '</a>');
+	  this.el = $('<a href="' + this.href + '" title="'+ this.title + '">' + this.name + '</a>');
       this.el = this.el.addClass('node');
     }
     $('#mindmap').prepend(this.el);
@@ -257,8 +258,8 @@
     if (!this.hasPosition) {
       //this.x = this.options.mapArea.x / 2;
       //this.y = this.options.mapArea.y / 2;
-      this.x = this.options.box.x0 + (this.options.box.dx/2);
-      this.y = this.options.box.y0 + (this.options.box.dy/2);
+      this.x = this.options.box.x0 + (this.options.box.dx/2) + Math.random()*5;
+      this.y = this.options.box.y0 + (this.options.box.dy/2) + Math.random()*5;
       this.el.css({'left': this.x + "px", 'top': this.y + "px"});
       this.hasPosition = true;
     }
@@ -319,7 +320,11 @@
     this.x = Math.min(box.x0+box.dx, Math.max(box.x0+1, this.x));
     this.y = Math.min(box.y0+box.dy, Math.max(box.y0+1, this.y));
     // display
-    showx = this.x - (this.el.width() / 2);
+    if (this.el.find("a.leaf") && !this.el.width()) {
+	  showx = this.x - (this.el.find("a.leaf").width() / 2);
+	}
+	else
+	  showx = this.x - (this.el.width() / 2);
     showy = this.y - (this.el.height() / 2) - 10;
     this.el.css({'left': showx + "px", 'top': showy + "px"});
     return false;
@@ -507,7 +512,9 @@
 	// need to do this because Raphael is drawing relative to its canvas, which is positioned
 	var offsetx = 0;//this.options.box.x0;
 	var offsety = 0;//this.options.box.y0;
-	var x0 = this.start.x-offsetx;
+	var node_width = this.start.el.width();
+	var x_start = this.start.x/*+(node_width/2)*/-offsetx;
+	var x0 = x_start;
 	var y0 = this.start.y-offsety;
 	var x1 = this.end.x-offsetx;
 	var y1 = this.end.y-offsety;

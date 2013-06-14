@@ -11,7 +11,7 @@
   max-height:     200px;
   padding-top:    35px;
   position:       relative;   
-  border:         1px solid #E8E8E8;  
+  border:         2px solid #E8E8E8;  
   border-top:     20px solid #fdfd86;
   font-family:    'Reenie Beanie';    
   font-size:      22px;      
@@ -92,6 +92,12 @@
   bottom: 0px;
 }
 
+.delete-icon {
+  position: absolute;
+  right: 0px;
+  top: -25px;
+}
+
 .tagged-icon {
   position: absolute;
   left: 0px;
@@ -159,8 +165,8 @@ div.square {
   background: teal;
   position: relative;
   border: 5px solid brown;
-  height: 750px;
-  width: 1505px;
+  height: 780px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
   
@@ -170,11 +176,11 @@ div.square {
 }
 .note-table {
   background: lightgreen;
-  position: absolute;
-  bottom: 0px;
+  position: relative;
+  //bottom: 0px;
   border: 2px solid brown;
-  height: 750px;
-  width: 1450px;
+  //height: 710px;
+  //width: 100%;
   
   //resize: both;
   //overflow: auto;
@@ -185,7 +191,8 @@ div.square {
   background: lightblue;
   position: relative;
   border: 2px solid blue;
-  height: 700px;
+  //height: 700px;
+  //width: 100%;
   //display: none;
   //z-index: 0; 
 }
@@ -206,14 +213,66 @@ div.slide-open {
 }
 
 div.divide {
-  background: lightgray;
-  position: absolute;
-  left: 0px;
-  top: 0px;
+  //background: lightgray;
+  //position: absolute;
+  //left: 0px;
+  //top: 0px;
 }
 div.category-name {
   position: absolute;
-  right: 300px;
+  //right: 300px;
   font-size: $huge-font-size;
   color: white;  
+}
+
+div.not-category {
+  position: absolute;
+  //right: 300px;
+  font-size: $huge-font-size;
+  color: white;  
+}
+
+div.all-notes  {
+  position: absolute;
+  //right: 300px;
+  font-size: $huge-font-size;
+  color: white;  
+  
+  a {
+    color: blue;
+    &:hover {
+      text-decoration: underline;
+      background: yellow;
+    }
+  }
+}
+// Place all the styles related to the Messages controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+
+#wrapper {
+    width:$tab-width;
+}
+
+div.html {
+  background: lightyellow;
+  width: $full-width;
+  //height: $message-box-height;
+  padding: 5px 5px 5px 5px;
+  border: 3px solid yellow;
+  overflow: auto;
+}
+
+div.new-note {
+  position: absolute;
+  font-size: $medium-font-size;
+  color: yellow;
+}
+
+div.notes-small {
+  border: 2px solid gray;
+  background: teal;
+  overflow: auto;
+  max-height: 600px;
 }

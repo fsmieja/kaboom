@@ -36,14 +36,15 @@ class ProjectsController < ApplicationController
   
   def show
     @project = Project.find(params[:id])
+    @note = Note.new
     @num_notes = @project.notes.count
     @num_tags = @project.tags.count
     if params[:pretty]
       @notes = @project.notes.order("created_at desc")
       @tag_numbers = {}
       @project.add_tag_numbers(@tag_numbers)    
-      @tags = (@project.tags + @project.note_tags).uniq
-      render :pretty_show
+      @all_tags = (@project.tags + @project.note_tags).uniq
+      render :pretty_show, layout: 'note_table'
     end
   end
 
@@ -78,6 +79,24 @@ class ProjectsController < ApplicationController
     @new_tag = t
   end  
   
+  def remove_tag
+    @removed = false
+    tag_id = params[:tag_id]
+    @project = Project.find(params[:id])
+    all_tags = 
+    tag = @project.tags.find(tag_id)
+    rescue
+      @tag_message = "Not able to remove tag"
+    else
+      if tag.notes.empty?
+        tag.destroy 
+        @removed = true
+        @remove_tag = tag_id
+        #@tags = note.tags
+      else
+        @tag_message = "Tag still being used - remove from note first"
+      end
+  end  
   private
 
 

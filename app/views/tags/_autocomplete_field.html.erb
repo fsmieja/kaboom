@@ -1,0 +1,36 @@
+<script>
+$(function() {
+
+
+  <% if style=="combo" %>
+
+
+  $( "#<%= dom_id %>" ).combobox();
+  $( "#toggle" ).click(function() {
+    $( "#<%= dom_id %>" ).toggle();
+  });
+	
+  $(document).keypress(function(e) {
+    if(e.which == 13) {
+        $(".custom-combobox-input").blur();
+    }
+  });
+
+  <% elsif style=="autocomplete" %>
+
+  var availableTags = [
+	<% all_tags.each_with_index do |t,i| %>
+	<% if i>0 %>
+	     ,
+	<% end %> 
+	 "<%= t.name %>"
+	<% end %>
+  ];
+  
+  $('#<%= dom_id %>').autocomplete({
+	source: availableTags
+  });
+
+  <% end %>
+});
+</script>

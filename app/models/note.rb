@@ -2,6 +2,7 @@ class Note < ActiveRecord::Base
   attr_accessible :content, :project_id, :title, :location
   
   belongs_to :project
+  
   has_many :note_taggings
   has_many :tags, through: :note_taggings
   has_one :position, dependent: :destroy

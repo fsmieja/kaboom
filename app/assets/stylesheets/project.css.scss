@@ -28,8 +28,27 @@ div.expand-full-screen {
   z-index: 20;
 }
 
-div.notes-small {
-  border: 2px solid gray;
-  overflow: auto;
-  max-height: 400px;
+
+
+.centered {
+  margin-left: auto;
+  margin-right: auto;
 }
+.heading {
+  font-size: $super-font-size;
+  color: blue;
+  text-align: center;
+  
+}
+a.project-link {
+  font-size: $large-font-size;
+  color: yellow;
+}
+
+div.table {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+

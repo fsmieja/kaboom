@@ -1,4 +1,4 @@
-<%= render 'edit', :many => false %>
+<%= render 'edit', note: @note, project_id: @project.id, :many => false %>
 
 <%= link_to "All messages", project_messages_path(@project) %>
 

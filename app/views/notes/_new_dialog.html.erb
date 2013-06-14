@@ -1,0 +1,73 @@
+<p class="validateTips">At least the title must exist, and have at least 3 characters.</p>
+<%= form_for note, remote: true do |f| %>
+	<fieldset>
+
+	<%= f.label 'Title' %>	
+	<%= f.text_field :title, class: "text ui-widget-content ui-corner-all" %><br/>
+	<%= f.label 'Location' %>	
+	<%= f.text_field :location, class: "text ui-widget-content ui-corner-all" %><br/>
+	<%= f.label 'Content' %>	
+	<%= f.text_area :content, class: "text ui-widget-content ui-corner-all" %><br/>
+	</fieldset>
+
+	<%= hidden_field_tag "id", project_id %>
+<% end %>
+
+
+<script>
+function updateTips( t ) {
+	tips.text( t ).addClass( "ui-state-highlight" );
+	setTimeout(function() {
+		tips.removeClass( "ui-state-highlight", 1500 );
+	}, 500 );
+}	
+	
+function checkLength( o, n, min, max ) {
+	if ( o.val().length > max || o.val().length < min ) {
+		o.addClass( "ui-state-error" );
+		updateTips( "Length of " + n + " must be between " +min + " and " + max + "." );
+		return false;
+	} 
+	else {
+		return true;
+	}
+}	
+
+$(function() {
+		
+ 	$( "#dialog-form" ).dialog({
+		autoOpen: false,
+		height: 420,
+		width: 450,
+		modal: true,
+		buttons: {
+			"Add Note": function() {
+				var bValid = true;
+				allFields.removeClass( "ui-state-error" );
+				bValid = bValid && checkLength( title, "title", 3, 50 );
+				if ( bValid ) {
+					$("#new_note").submit();
+					$( this ).dialog( "close" );
+				}
+			},
+			Cancel: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		close: function() {
+			allFields.val( "" ).removeClass( "ui-state-error" );
+		}
+	});
+	
+	$( "#enter_new_note" ).button().click(function() {
+		$( "#dialog-form" ).dialog( "open" );
+	});
+	
+	var title = $( "#note_title" );
+	var location = $( "#note_location" );
+	var content = $( "#note_content" );
+	allFields = $( [] ).add( title ).add( location ).add( content ),
+	tips = $( ".validateTips" );
+	
+});
+</script>

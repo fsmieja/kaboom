@@ -1,9 +1,10 @@
-<div id="tag-list">
+<div id="price-tag-list">
   <ul class="price-tag">
   	<li></li>
   	<% tags.each do |t| %>
-    	<%= render 'tags/tag_label', :tag => t, :id => id, :controller => controller %>
+    	<%= render 'tags/tag_label', :tag => t, :id => id, :controller => "#{resource}s" %>
   	<% end %>
+  	<li><%= render 'tags/add_tag', id: id, resource: resource, style: style, all_tags: all_tags %></li>
   </ul>
 </div>
 

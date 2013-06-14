@@ -1,46 +1,12 @@
-<% 		
-		line_height = postit_height+50	
-		col_spacing = postit_width+50
-		max_top = table_height-postit_height
-		max_left = table_width-postit_width
-		left_start = 50
-		top_start = 20
 
-		i_left = left_start
-		i_top = top_start
+<%
+grid_id = 0;
+notes.each_with_index do |n,i|  
+	if n.position.nil? %> 
+		<%= render "notes/draggable_postit", postit: n, grid_id: grid_id, top: "-1", left: "-1", z_index: "-1" %>
+		<% grid_id += 1 
+	else %>
+		<%= render "notes/draggable_postit", postit: n, grid_id: "-1", top: n.position.top, left: n.position.left, z_index: n.position.z_index %>
+ <% end
+end 
 %>
-<% notes.each_with_index do |n,i| %>
-	<% 
-	if n.position.nil?	
- 		i_left += col_spacing if i>0
- 		if i_left>max_left
- 			i_left = left_start
- 			i_top += line_height
-	 	end
-	 	if i_top>max_top
- 			i_top = rand(max_top)
- 			i_left = rand(max_left)
- 		end
- 		z_index = 0
- 		top = i_top
- 		left = i_left
- 	else
-  		top = n.position.top
-  		left = n.position.left
-  		z_index = n.position.z_index
-		if left>max_left
- 			left = max_left
-	 	end
-	 	if top>max_top
- 			top = max_top
- 		end
-	end
-	%>
-	<%= render "notes/draggable_postit", postit: n, table: table, top: top, left: left, z_index: z_index %>
-<% end %>
-<script>
-$(function() {
-	$("<%= table %>").css("height", "<%= table_height %>");
-	$("<%= table %>").css("width", "<%= table_width %>");
-});
-</script>

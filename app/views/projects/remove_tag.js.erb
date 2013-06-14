@@ -1,0 +1,7 @@
+<% if @removed %>
+	$('#<%= @remove_tag %>').remove();
+<% else %>
+  alert('<%= @tag_message %>');
+<% end %>
+
+$('#tagcloud').load('<%= project_path({id: @project, pretty: true}) %> #tagcloud') ;

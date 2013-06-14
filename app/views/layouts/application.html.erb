@@ -20,10 +20,12 @@
     <%= favicon_link_tag %>
   </head>
   <body>
-  	<% if @no_layout %>
-  	<%= yield %>
+  	<% if @wide_layout %>
+      <div id="container" class="container-wide">
   	<% else %>
-    <div id="container" class="container">
+	  <div id="container" class="container">
+	<% end %>
+
       <%= render 'layouts/header' %>
       <section class="round">
         <% flash.each do |key, value| %>
@@ -38,7 +40,6 @@
     </div>
 
         <%= render 'layouts/nojs' %>
-    <% end %>
   </body>
 </html>
 

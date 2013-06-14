@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130530122240) do
+ActiveRecord::Schema.define(:version => 20130610085901) do
 
   create_table "note_taggings", :force => true do |t|
     t.integer  "note_id"
@@ -34,13 +34,6 @@ ActiveRecord::Schema.define(:version => 20130530122240) do
     t.integer  "left"
     t.integer  "z_index"
     t.integer  "note_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  create_table "project_taggings", :force => true do |t|
-    t.integer  "project_id"
-    t.integer  "tag_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end

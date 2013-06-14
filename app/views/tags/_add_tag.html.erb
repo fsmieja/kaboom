@@ -1,26 +1,12 @@
 <% path = id>0 ? "/#{resource}/#{id}/add_tag" : new_tag_path %>
 
 <%= form_tag path, remote: true, method: :put, id: "new-tag-form" do %>
-	<%= text_field_tag :new_tag %>	
-  	<%= submit_tag 'Add Tag' %>  
+<% if style=="textbox" %>
+<%= text_field_tag :new_tag, "", {placeholder: "new tag name"}%>
+<% else %>
+<%= select_tag 'new_tag', options_from_collection_for_select(all_tags, 'name', 'name'), :include_blank => true	%>
 <% end %>
 
+<% end %>
 
-<script>
-$(function() {
-
-var availableTags = [
-	<% all_tags.each_with_index do |t,i| %>
-	   <% if i>0 %>
-	     ,
-	   <% end %> 
-		"<%= t.name %>"
-	<% end %>
-];
-
-$("#new_tag").autocomplete({
-	source: availableTags
-});
-
-});
-</script>
+<%= render 'tags/autocomplete_field', dom_id: 'new_tag', style: style, all_tags: all_tags %>

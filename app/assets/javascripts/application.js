@@ -18,4 +18,7 @@
 //= require tabs
 //= require raphael-min
 //= require js-mindmap
-
+//= require jquery.combobox
+//= require metro-dialog
+//= require jquery.notesonpage
+//= require jquery.topzindex

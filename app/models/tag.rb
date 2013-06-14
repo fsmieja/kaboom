@@ -1,11 +1,10 @@
 class Tag < ActiveRecord::Base
   attr_accessible :name
+
+  belongs_to :project
   
   has_many :note_taggings
   has_many :notes, through: :note_taggings
-  has_many :project_taggings
-  has_many :projects, through: :project_taggings
-  has_many :note_projects, through: :notes, source: :projects 
   
   
   def self.create_tags(name,many=false)

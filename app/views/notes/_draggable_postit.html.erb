@@ -1,30 +1,11 @@
-<div  note_id="<%= postit.id %>" class="draggable">
+<div  data-note_id="<%= postit.id %>" data-grid="<%= grid_id %>" data-top="<%= top %>" data-left="<%= left %>" data-z="<%= z_index %>" class="draggable">
 	<div  class="postit" >
-		<b><%= postit.title %></b><br/><%= postit.content %>
+		<b><u><%= postit.title %></u></b><br/><%= postit.content %>
+		<div class="delete-icon"><%= link_to image_tag('delete-icon3.png', size: '15x15'), note_path(postit), remote: true, method: :delete, title: "Delete note", confirm: "Are you sure?" %></div> 
 		<div class="edit-icon"><%= link_to image_tag('magnify.png', size: "25x25"), note_path(postit), title: "Click to inspect" %></div> 
 		<div class="tagged-icon">
 			<%= render 'notes/tagged_icon', note_id: postit.id, num_tags: postit.tags.count %>
 		</div>
 	</div>
 </div>
-<script>
 
-$(function() {
-	
-	var table_border_top = parseInt($("<%= table %>").css("borderTopWidth"), 10); 
-	var table_border_left = parseInt($("<%= table %>").css("borderLeftWidth"), 10); 
-	var obj = $(".draggable[note_id='<%= postit.id %>']");
-	//alert('border: '+table_border_top+','+table_border_left);
-	var top = <%= top %>+table_border_top;		/* adding on the margin of the table */
-	var left = <%= left %>+table_border_left;
-	obj.appendTo("<%= table %>");
-	obj.position({
-		my: "left top",
-		at: 'left+'+left+' top+'+top,   
-		of: "<%= table %>"
-	});
-	//alert('top: '+top+', left: '+left);
-	obj.addClass('rotate-3');
-	obj.css("z-index", "<%= z_index %>");
-});
-</script>

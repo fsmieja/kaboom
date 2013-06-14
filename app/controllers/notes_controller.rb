@@ -10,8 +10,10 @@ class NotesController < ApplicationController
     @tag_numbers = {}
     @project.add_tag_numbers(@tag_numbers)    
     @tags = (@project.tags + @project.note_tags).uniq
+    @all_tags = (@project.tags + @project.note_tags).uniq
     if params[:pretty]
-      @notes = @project.notes.order("created_at asc")
+      @notes = @project.notes.joins("LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc")
+      @note = Note.new
       render :notes_table, layout: 'note_table'
     else
       @per_page = params[:per_page] ||  20
@@ -22,6 +24,7 @@ class NotesController < ApplicationController
     
   def divide
       @project = Project.find(params[:id])  
+      @note = Note.new
       tag_name = params[:category]
       tag = Tag.find_by_name(tag_name)
       if tag.nil?
@@ -58,13 +61,22 @@ class NotesController < ApplicationController
   def create
     @project = Project.find(params[:id])
     @note = @project.notes.build(params[:note])
+    @added = true
     if !@note.save!
-      flash.now[:error] = "Error creating note"
-      render 'new'
+      @message = flash.now[:error] = "Error creating note"
+      @added = false
+      respond_to do |format|
+        format.html { render 'new' }
+        format.js
+      end
     else
-      redirect_to project_notes_path(@project), :notice => "Created note"     
+      respond_to do |format|
+        format.html { redirect_to notes_path(@project) }
+        format.js
+      end
     end
   end
+
   
   def edit
     @note = Note.find(params[:id])  
@@ -82,7 +94,7 @@ class NotesController < ApplicationController
   end
   
   def create_tag
-    @no_layout = true
+    @wide_layout = true
     @note = Note.find(params[:id])
     @tags = @note.tags
     @all_tags = @note.project.tags.uniq
@@ -148,6 +160,7 @@ class NotesController < ApplicationController
     end
     @tags = note.tags 
     @new_tag = t
+    
   end
   
   def remove_tag
@@ -166,13 +179,24 @@ class NotesController < ApplicationController
     
   def show
     @note = Note.find(params[:id])
-    @actions = get_actions(@note.content)
-    @events = get_events(@note.content)
     @tags = @note.tags
-    @all_tags = @note.project.tags.uniq
-    #@questions = get_questions @message.content
+    project = @note.project
+    @all_tags = (project.tags+project.note_tags).uniq
     @new_note = Note.new
   end
+  
+  def destroy
+    note = Note.find(params[:id])
+    project = note.project
+    @id = params[:id]
+    note.destroy
+    @removed = true
+    respond_to do |format|
+      format.html { redirect_to notes_path(project), notice: "Deleted note" }
+      format.js
+    end
+  end
+  
   private
    
 

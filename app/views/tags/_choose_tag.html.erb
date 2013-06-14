@@ -1,0 +1,8 @@
+<div class="divide">
+
+<%= form_tag divide_notes_path(project_id), id: "select_form", method: :get do %>
+<%= submit_tag "Divide and Conquer" %>
+<%= select_tag 'category', options_from_collection_for_select(all_tags, 'name', 'name'), :include_blank => true	%>
+<% end %>
+</div>
+<%= render 'tags/autocomplete_field', dom_id: 'category', style: "combo", all_tags: all_tags %>

@@ -1,14 +1,15 @@
 <%= link_to "Back to Project", project_path({id: @tag.notes[0].project, pretty: true})%>
 <div class="mindmap" id="mindmap">
   <ul>
-    <li><%= link_to @tag.name, mindmap_path(@tag) %>
+    <li><%= link_to (@tag.name.length>10 ? "#{@tag.name[0,10]}..." : @tag.name), mindmap_path(@tag), title: @tag.name %>
       <ul>
       	<% @neighbour_tags.each do |t| %>
         <li>
         	<% next_tags = t.get_node_tags([@tag])
-        	   name = next_tags.count>0 ? "#{t.name} (+#{next_tags.count})" : t.name 
+        	   name = t.name.length>10 ? "#{t.name[0,10]}..." : t.name
+        	   name = next_tags.count>0 ? "#{name} (+#{next_tags.count})" : name 
         	%>
-        	<%= link_to name, mindmap_path(t)  %>
+        	<%= link_to name, mindmap_path(t), title: t.name   %>
         	<% if @depth == 2 %>
 	        	<ul>
    		      	<% t.notes.each do |n| %>
@@ -59,6 +60,7 @@ $(document).ready(function() {
   var rootNode = $('#mindmap>ul>li').eq(0);
   mynode = mindmapObj.addRootNode(rootNode.find('>a').text(), {
     href:'/',
+    title:rootNode.find('>a').attr("title"),
     url:'/',
     onclick:function(node) {
       $(node.obj.activeNode.content).each(function() {
@@ -86,6 +88,7 @@ $(document).ready(function() {
     }
     this.mynode = mindmapObj.addNode(parentnode, $(this).find('>a:eq(0)').text(), {
       href:$('a:eq(0)',this).attr('href'),
+      title:$('a:eq(0)',this).attr('title'),
       /*
       onclick:function(node) {
         $(node.obj.activeNode.content).each(function() {

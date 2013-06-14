@@ -1,8 +1,6 @@
 <% if @added %>
-	$('#tag-header').text('Tags (<%= @tags.count %>)');
-	$('#tag-header').effect("bounce", {});
 	<% tag_id = @new_tag.id %>
-	$('#tag-list li:last').after('<li id="<%= tag_id %>"><%= link_to @new_tag.name, tag_path(tag_id), class: "price-tag-link" %><%= link_to "X", {controller: :notes, action: :remove_tag, tag_id: tag_id}, {method: :post, id: "popup-#{tag_id}", class: "popup", remote: true }%>');
+	$('#price-tag-list li:last').prev().after('<li id="<%= tag_id %>"><%= link_to @new_tag.name, tag_path(tag_id), class: "price-tag-link" %><%= link_to "X", {controller: :notes, action: :remove_tag, tag_id: tag_id}, {method: :post, id: "popup-#{tag_id}", class: "popup", remote: true }%>');
 <% else %>
   alert('<%= @tag_message %>');
 <% end %>

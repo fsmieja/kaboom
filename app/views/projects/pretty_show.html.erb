@@ -1,5 +1,4 @@
 <h1>Project '<%=@project.name%>'</h1>
-<p></p>
 
 <table class="cloud-and-table">
 	<tr>
@@ -7,7 +6,7 @@
 			<table id="tag-list" class="url-list sortable">
 			<tr >
 				<td style="padding: 5px">
-					<%= render 'tags/tag_cloud', :tags => @tags, :tag_numbers => @tag_numbers, :project => @project %>
+					<%= render 'tags/tag_cloud', :tags => @all_tags, :tag_numbers => @tag_numbers, :project => @project %>
 				</td>
 			</tr>
 			</table>	
@@ -15,33 +14,33 @@
 		<td>
 			<div class="notes-small">
 				<div class="expand-full-screen"><%= link_to(image_tag("expand_full_screen.png", size: "20x20"), project_notes_path({id: @project, pretty: true})) %></div>
-				<%= render 'notes/postits', posts: @posts, per_line: 2 %>
+				<%= render 'notes/postits', notes: @notes, per_line: 2 %>
 			</div>
 		</td>	
 	</tr>
 	<tr>
 		<td colspan="2">
-			<%= render 'tags/tag_list', :tags => @tags, :id => @project.id, :controller => "project"%>
+			<%= render 'tags/tag_list', tags: @all_tags, all_tags: @all_tags, id: @project.id, style: "textbox", resource: "project"%>
 		<td>
 	</tr>
-	<tr>
-		<td colspan="2">
-			<%= render 'tags/add_tag', :id => @project.id, :resource => "project", :all_tags => @tags %>
-		</td>
-	</tr>
 </table>
-<%= button_to "Create Note", new_project_note_path(@project.id), :method => 'get' %>
-<%= link_to "Project", project_path(@project)%> |
-<%= link_to "All Projects", projects_path %> 
+
+<%= render "notes/arrange_notes_on_table", notes: @notes  %>
+
+<%= render 'notes/new_note', note: @note, project_id: @project.id %>
+
 
 <script>
+$(function(){
+	var table_selector = ".note-table";
+	var table_height = 600;
+	var table_width = 600;
+	initialize_table($(table_selector), table_height, table_width);
 	$('#tag-list').height($('#table-list').height());
 	$('#cloud-header').height($('#list-header').height());
-	$('.add-tag').click(function(){
-		var id=$(this).attr("id");
-		$('#tag-entry-'+id).toggle();
-		return false;
-	});
+	initialize_notes($(table_selector), postit_height, postit_width, table_height, table_width);
+
+})
 </script>
 
 

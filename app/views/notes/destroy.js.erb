@@ -1,0 +1,7 @@
+<% if @removed %>
+	var note_obj = $("[data-note_id='<%= @id %>']");
+	// remove the note
+	note_obj.remove();
+<% else %>
+	alert('<%= @tag_message %>');
+<% end %>
