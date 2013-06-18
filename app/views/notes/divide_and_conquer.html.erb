@@ -7,36 +7,16 @@
 <div class="category-name">Category "<%= @tag.name %>"</div>
 
 <div id="table" class="note-table">
-	<table 	style="spacing: 0">
-		<tr>
-			<td style="padding: 0">
-				<div id="source" class="divide-table">
-					<%= render "notes/arrange_notes_on_table", notes: @notes_without_tag %>
-				</div>
-			</td>
-			<td style="padding: 0">
-				<div id="target" class="divide-table">
-					<%= render "notes/arrange_notes_on_table", notes: @notes_with_tag %>					
-				</div>
-			</td>
-		</tr>
-	</table>
+	<div id="source" class="source-table">
+		<%= render "notes/arrange_notes_on_table", notes: @notes_without_tag %>
+	</div>
+	<div id="target" class="target-table">
+		<%= render "notes/arrange_notes_on_table", notes: @notes_with_tag %>					
+	</div>
 </div>
 
 
 <%= render 'notes/new_note', note: @note, project_id: @project.id %>
-
-
-<%
-	table_height = 710
-	table_width = 1500
-	postit_height = 276
-	postit_width = 297	
-	divide_height = table_height-3
-	divide_width = table_width/2-3
-	max_top = divide_height-postit_height
-	max_left = divide_width-postit_width
-%>
 
 
 <%= form_tag toggle_tag_note_path, remote: true, id: "tag_form", method: :put do %>
@@ -46,174 +26,33 @@
 
 <script type="text/javascript">
 
-function setLeftLimit(left) {
-  	if (left < 5) {
-  		left = 5;
-  	}
-  	if (left > <%= max_left %>) {
-  		left = <%= max_left %>;
-  	}
-  	return left;
-}
-
-function setTopLimit(top) {
-  	if (top < 5) {
-  		top = 5;
-  	}
-  	if (top > <%= max_top %>) {
-  		top = <%= max_top %>;
-  	}
-  	return top;
-}
-
-function setNewPosition(obj,top,left,of) {
-  	left = setLeftLimit(left);
-  	top = setTopLimit(top);
-  	
-  	obj.position({
-  		my: "left top",
-  		at: 'left+'+left+' top+'+top,
-  		of: of
-  	});
-}
-
-function setNewPositionRight(obj,helper_pos,table_pos) {
-	var left = helper_pos.left;
-  	var top = helper_pos.top;
-	if (helper_pos.left>table_pos.left-10) {
-		left = (helper_pos.left-table_pos.left);
-	}	
-	setNewPosition(obj,top,left,"#target");
-}
-
-function setNewPositionLeft(obj,helper_pos,table_pos) {
-	var left = helper_pos.left;
-  	var top = helper_pos.top;
-	if (left < -10) {
-		left += table_pos.left;
-	}
-	setNewPosition(obj,top,left,"#source");
-}
-
-
-$(function() {
-
-  $("#table").css("height", $(".full-table").height()-100);
-  $("#source").css("height", $("#table").height());
-  $("#target").css("height", $("#table").height());
-//  $("#table").css("width", "<%= table_width %>");
-  $("#source").css("background", "red");
-  $("#target").css("background", "green");
-
-  $(".draggable").draggable({
-  	//cursor: "crosshair",
-  	revert: "invalid",
-  	stack: ".draggable", 
-  	helper: "original",
-  	scope: ".fromsource .fromtarget",
-  	start: function( event, ui ) {
-  		containment: "#table"
-  	},
-  	containment: "#table"
-  });
-  $(".draggable").each(function() {
-  	if ($(this).parent().attr("id")=="source") {
-  		$(this).addClass("fromsource");
-  	}
-  	else {
-  		$(this).addClass("fromtarget");
-  	}
-  });
+function initPage() {
+	
+	var source = $("#source");
+	var target = $("#target");
+	var full_table = $(".full-table");
   
-  $("#target").droppable({
-  	tolerance: "fit",
-  	scope: ".fromsource .fromtarget",
-  	helper: "clone",
-  	drop: function(event, ui) {
-  		var obj = ui.draggable;
-  		if (obj.parent().attr("id")!="target") {
-	  		obj.removeClass("fromsource");
-  			obj.addClass("fromtarget");
-  			obj.appendTo("#target");
-			setNewPositionRight(obj,ui.helper.position(),$(this).position());
-			$("#target_note_id").val(obj.attr("note_id"));
-			$("#tag_form").submit();
-		}
-		else {
-			setNewPositionRight(obj,ui.helper.position(),$(this).position());
-		}		 
-  	}
-  });
+    $("#table").css("height", full_table.height()-100);
+	source.initializeDivideTable({position: 'left'}).children().initializeDivideNotes();		
+	target.initializeDivideTable({position: 'right'}).children().initializeDivideNotes();		
 
-  $("#source").droppable({
-  	tolerance: "fit",
-  	scope: ".fromsource .fromtarget",
-  	helper: "clone",
-  	drop: function(event, ui) {
-  		var obj = ui.draggable;
-  		if (obj.parent().attr("id")!="source") {
-	  		obj.removeClass("fromtarget");
-  			obj.addClass("fromsource");
-  			obj.appendTo("#source");
-			setNewPositionLeft(obj,ui.helper.position(),$("#target").position());
-			$("#target_note_id").val(obj.attr("note_id"));
-			$("#tag_form").submit();
-		}
-		else {
-			setNewPositionLeft(obj,ui.helper.position(),$(this).position());
-		}		 
-  	}
-  });
-
-/*
-$("#source").sortable({
-	connectWith: "#target",
-	cursor: "move"
-	//grid: [ 20, 10 ]
-	});
-$("#target").sortable({
-	connectWith: "#source",
-	cursor: "move"
-	//grid: [ 20, 10 ]
-	});
-*/
-	var delta = $(".full-table").css("border-left-width");
-
+	var delta = parseInt(full_table.css("border-left-width"),10);
+	var table_border = parseInt(full_table.css("border-bottom-width"),10);
+	
 	$("#table").position(
 		{
 			my: "center bottom",
-			at: "center bottom-"+$(".full-table").css("borderBottomWidth"),
-			of: ".full-table",
+			at: "center bottom-"+table_border,
+			of: full_table,
 			collision: "none"
 
 		}
 	);
-
-	$("#source").position(
-		{
-			my: "left bottom",
-			at: "left bottom-"+$("#table").css("borderBottomWidth"),
-			of: "#table",
-			collision: "none"
-
-		}
-	);
-
-	$("#target").position(
-		{
-			my: "right bottom",
-			at: "right bottom-"+$("#table").css("borderBottomWidth"),
-			of: "#table",
-			collision: "none"
-
-		}
-	);
-
 	$(".category-name").position(
 		{
 			my: "center bottom",
 			at: "center top",
-			of: "#target",
+			of: target,
 			collision: "none"
 		}
 	);
@@ -221,7 +60,7 @@ $("#target").sortable({
 		{
 			my: "center bottom",
 			at: "center top",
-			of: "#source",
+			of: source,
 			collision: "none"
 		}
 	);
@@ -229,28 +68,35 @@ $("#target").sortable({
 		{
 			my: "right top",
 			at: "right top",
-			of: "#source",
+			of: source,
 			collision: "none"
 		}
 	);
-
 	$(".divide").position(
 		{
 			my: "left top",
 			at: "left+"+delta+" top+"+delta,
-			of: ".full-table",
+			of: full_table,
 			collision: "none"
 		}
 	);
-
 	$(".new-note").position(
 		{
 			my: "center top",
 			at: 'center top+'+delta,
-			of: ".full-table",
+			of: full_table,
 			collision: "none"
 		}
 	);	
+	$("#dialog_form").css("z-index",99999999);
+}
+	
+$(function (){ 
+	initPage();	
+	
+	$(window).resize(function () {
+		initPage();		
+	});
 
 });
 

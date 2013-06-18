@@ -18,6 +18,7 @@ Kaboom::Application.routes.draw do
   match 'note/set_position'     => 'notes#set_position', as: :note_position, via: :put 
   match 'project/:id/note/new'  => 'notes#new', as: :new_project_note, via: :get 
   match 'project/:id/divide'    => 'notes#divide', as: :divide_notes, via: :get
+  match 'project/:id/search'      => 'notes#search', as: :search_notes, via: :get
   
   match 'project/:id/add_tag'   => 'projects#tag', as: :tag_project, via: :put   
   match 'project/:id/remove_tag'  => 'projects#remove_tag', as: :remove_tag_from_project, via: :post 

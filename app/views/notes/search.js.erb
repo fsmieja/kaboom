@@ -1,0 +1,4 @@
+$("#table").children().remove();	
+var div_str = '<div id="temp"><%= j render "notes/arrange_notes_on_table", notes: @notes %></div>';
+$(div_str).children().appendTo("#table").initializeNotes().topZIndex();
+//alert($("#table").html());

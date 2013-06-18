@@ -1,0 +1,12 @@
+<div class="search">
+
+<%= form_tag search_notes_path(project_id), id: "search_form", method: :get, remote: true do %>
+	<%= select_tag "search_type", "<option>Note Content</option><option>Tags</option>".html_safe%>
+	<%= search_field_tag "str", "", placeholder: "enter search text" %>
+	<%= submit_tag "Search" %>
+<% end %>
+</div>
+<script>
+$("#str").width(200);
+$("#search_type").width(120);
+</script>

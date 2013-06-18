@@ -20,6 +20,8 @@ class TagsController < ApplicationController
      end 
   end
   
+
+  
   def mindmap
     #@project = Project.find(params[:id])
     tag_id = params[:id]

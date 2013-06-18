@@ -3,6 +3,7 @@
 
 
 <%= render 'tags/choose_tag', all_tags: @all_tags, project_id: @project.id %>
+<%= render 'notes/search_note', project_id: @project.id %>
 <button id="enter_new_note" class="new-note">Add a note</button>
 <div class="expand-full-screen"><%= link_to(image_tag("fullscreen-close.png", size: "25x25"), project_path({id: @project, pretty: true})) %></div>			
 <div class="all-notes">All Notes for <%= link_to @project.name, project_path({id: @project.id, pretty: true}) %></div>
@@ -47,6 +48,14 @@ function initPage() {
 		}
 	);
 
+	$(".search").position(
+		{
+			my: "right top",
+			at: 'left-'+delta+' top',
+			of: ".expand-full-screen",
+			collision: "none"
+		}
+	);
 	$("#dialog_form").css("z-index",99999999);
 }
 	

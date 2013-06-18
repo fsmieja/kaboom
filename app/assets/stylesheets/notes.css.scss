@@ -197,6 +197,18 @@ div.square {
   //z-index: 0; 
 }
 
+.source-table {
+  position: relative;
+  border: 2px solid red;
+  background: red;
+}
+
+.target-table {
+  position: relative;
+  border: 2px solid green;
+  background: green;
+}
+
 .ui-draggable-helper {
   border: 1px dotted #000;
   opacity: 50%;
@@ -217,6 +229,11 @@ div.divide {
   //position: absolute;
   //left: 0px;
   //top: 0px;
+    position: absolute;
+
+}
+div.search {
+  position: absolute;
 }
 div.category-name {
   position: absolute;

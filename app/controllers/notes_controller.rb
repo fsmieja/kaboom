@@ -21,7 +21,21 @@ class NotesController < ApplicationController
       @notes = @project.notes.order(order_str).page(params[:page]).per_page(@per_page)
     end
   end
-    
+
+  def search
+    project = Project.find(params[:id])
+    searchStr = params[:str]
+    searchType = params[:search_type]
+    if searchType=="Tags"
+      @notes = project.notes.joins("inner join note_taggings n on notes.id = n.note_id inner join tags t on n.tag_id = t.id LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("t.name like '%#{searchStr}%'").uniq
+    else
+      @notes = project.notes.joins("LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("notes.title like '%#{searchStr}%' or notes.content like '%#{searchStr}%' or notes.location like '%#{searchStr}%'").uniq
+    end
+    respond_to do |format|
+      format.js # search.js.erb
+    end
+  end
+      
   def divide
       @project = Project.find(params[:id])  
       @note = Note.new
