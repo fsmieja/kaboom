@@ -1,0 +1,10 @@
+development:
+  kaboom_host_name:    "localhost"
+  kaboom_host_url:     "http://localhost"
+  evernote_consumer_key:      "fsmieja"
+  evernote_consumer_secret: "f3bb2c2a63f7ddba" 
+  evernote_sandbox: "true"
+test:
+
+production:
+  

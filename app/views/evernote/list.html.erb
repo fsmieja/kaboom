@@ -1,0 +1,21 @@
+<h1>Evernote Rails Example</h1>
+
+<a href="/evernote/requesttoken">Click here</a> to authenticate this application using OAuth.
+<% if session[:evernote_username] %>
+<hr />
+The current user is <%= session[:evernote_username] %> and there are <%= session[:evernote_total_notes] %> notes in their account
+<br />
+Here are the notebooks in this account:
+<ul>
+<% @nb.each do |notebook| %>
+<li><%= link_to notebook.name, evernote_notebook_path(notebook.guid)%></li>
+<% end %>
+</ul>
+
+Here are the notes in this account:
+<ul>
+<% @notes.notes.each do |note| %>
+<li><%= link_to note.title, evernote_note_path(note.guid)%></li>
+<% end %>
+</ul>
+<% end %>

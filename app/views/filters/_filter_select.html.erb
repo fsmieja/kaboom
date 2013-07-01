@@ -1,0 +1,90 @@
+<span id="filter_select">
+	<%= select_tag "filter", "<option value='-1'>(No filter)</option>".html_safe + options_from_collection_for_select(filters, "id", "name").html_safe %>
+	<%= image_tag 'save_edit.png', id: "filter_save", title: "Save current search to selected filter", class: "image-button" %>
+	<%= image_tag 'save_add.png', id: "filter_add", title: "Save current search to a new filter", class: "image-button" %>
+</span>
+<%= form_for new_filter, remote: true do |f| %>
+	<%= f.hidden_field "str" %>
+	<%= f.hidden_field "search_type" %>
+	<%= f.text_field "name", placeholder: "new filter name" %>
+	<span class="search-cancel" id="filter_cancel">x</span>
+<% end %>
+<%= form_tag filter_selection_path, id: "filter_select_form", remote: true do %>
+	<%= hidden_field_tag "filter_id" %>
+<% end %>
+
+
+<script>
+
+var search_str = $("#<%= search_str_id %>");
+var search_type = $("#<%= search_type_id %>");
+
+$(function(){
+	
+	$("#filter_save").position({
+		my: "left center",
+		at: "right center",
+		of: "#filter"
+		}).click(function(){
+		if (search_str.val().length>0 && $("#filter").val()!=-1) {
+			$("#filter_str").val(search_str.val());
+			$("#filter_search_type").val(search_type.val());
+			$("#filter_name").val($("#filter :selected").text());
+			$("#new_filter").submit();
+			$("#filter_name").val('');
+		}
+		return false;
+	});
+
+	$("#filter_add").position({
+		my: "left center",
+		at: "right center",
+		of: "#filter_save"
+		}).click(function(){
+		if (search_str.val().length>0) {
+			$("#filter_str").val(search_str.val());
+			$("#filter_search_type").val(search_type.val());
+			$("#new_filter").toggle();
+			$("#filter_name").focus();
+		}
+		else
+			$("#new_filter").hide();
+		return false;
+	});
+
+	$("#filter").width(180).change(function(){
+		if ($(this).val()=="-1")
+			search_str.val('');
+		else  {
+			$("#filter_id").val($(this).val());
+			$("#filter_select_form").submit();
+		}
+	});
+
+	$("#filter_select").position({
+		my: "right center",
+		at: "left center",
+		of: search_type,
+		collision: "none"
+	});
+	
+	$("#filter_name").width(200).position({
+		my: "left bottom",
+		at: "right top",
+		of: "#filter_save",
+		collision: "none"
+	});
+	$("#filter_cancel").position({
+		my: "right center",
+		at: "right-5 center",
+		of: "#filter_name",
+		collision: "none"
+	}).click(function(){
+		$("#new_filter").hide();
+	});
+	$("#new_filter").hide().submit(function() {
+		$(this).hide();	
+	});
+	
+})
+</script>

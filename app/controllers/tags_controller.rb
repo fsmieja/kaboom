@@ -31,6 +31,8 @@ class TagsController < ApplicationController
     @tag = Tag.find(tag_id)
     @neighbour_tags = @tag.get_node_tags
     @depth = 2
+    render :mindmap , layout: 'note_table'
+
   end
   
   def destroy
@@ -80,6 +82,26 @@ class TagsController < ApplicationController
     render 'edit'
   end
   
+  
+  def tag_notes
+    @added = true
+    t = Tag.find_or_create_tag(params[:new_tag])
+    if !t
+      @tag_message = "Tag must be at least 2 characters long"
+      @added = false
+    else
+      notes_list = params[:note_list].split(/ /)
+      notes_list.each do |n|
+        note = Note.find(n)
+        if !note.tags.include? t
+          note.tags << t
+        end
+      end
+      #@tags = note.tags 
+      @new_tag = t
+    end
+  end
+    
   private
   
   def get_projects(notes)

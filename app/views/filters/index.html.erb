@@ -1,0 +1,31 @@
+<%= form_tag delete_all_filters_path, method: :put, remote: true do %>
+	<table class="tag-list sortable">
+		<tr>
+			<th><%= check_box_tag "select_all" %></th>
+			<th><%= sortable('name', 'Name') %></th>
+			<th>Filter string</th>
+			<th>Search Type</th>
+			<th><%= sortable('created_at', "Created")%>
+		</tr>
+		<%= render @filters  %>
+	</table>
+	<%= submit_tag "Delete selected", confirm: "Are you sure?"%>
+<% end %>
+
+<script>
+$(function(){
+	$('.best_in_place').best_in_place();
+	$('#select_all').click(function() {
+   		if (this.checked) {
+       		$(':checkbox').each(function() {
+           		this.checked = true;                        
+       		});
+   		} 
+   		else {
+      		$(':checkbox').each(function() {
+           		this.checked = false;                        
+       		});
+   		} 
+	});
+})
+</script>

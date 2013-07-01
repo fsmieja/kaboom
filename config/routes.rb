@@ -5,8 +5,11 @@ Kaboom::Application.routes.draw do
   root :to => 'projects#index'
 
   match 'tags/delete_all'       => 'tags#delete_all', as: :delete_all_tags, via: :put 
+  match 'filters/delete_all'    => 'filters#delete_all', as: :delete_all_filters, via: :put 
 
-  resources :projects, :notes, :tags
+  resources :projects, :notes, :tags, :filters
+
+  match 'filters/select'        => 'filters#select', as: :filter_selection, via: :post 
 
   match 'project/:id/notes'     => 'notes#index', as: :project_notes, via: :get 
   match 'note/:id/tags'         => 'notes#tags', as: :note_tags, via: :get 
@@ -18,14 +21,26 @@ Kaboom::Application.routes.draw do
   match 'note/set_position'     => 'notes#set_position', as: :note_position, via: :put 
   match 'project/:id/note/new'  => 'notes#new', as: :new_project_note, via: :get 
   match 'project/:id/divide'    => 'notes#divide', as: :divide_notes, via: :get
-  match 'project/:id/search'      => 'notes#search', as: :search_notes, via: :get
+  match 'project/:id/search_notes'  => 'notes#search', as: :search_notes, via: :get
   
   match 'project/:id/add_tag'   => 'projects#tag', as: :tag_project, via: :put   
   match 'project/:id/remove_tag'  => 'projects#remove_tag', as: :remove_tag_from_project, via: :post 
+  match 'project/:id/search'    => 'projects#search', as: :search_project, via: :get
   
   match 'project/:id/tags'      => 'tags#index', as: :project_tags, via: :get 
   match 'tag/:id/mindmap'       => 'tags#mindmap', as: :mindmap, via: :get 
+  match 'tag/tag_notes'          => 'tags#tag_notes', as: :batch_tag_notes, via: :put 
+  match 'note/:id/mindmap'       => 'notes#mindmap', as: :note_mindmap, via: :get 
    
+   
+  match 'evernote/requesttoken'  => 'notes#requesttoken_evernote'
+  match 'evernote/authorize'  => 'notes#authorize_evernote'
+  match 'evernote/callback'  => 'notes#callback_evernote'
+  match 'evernote/list'  => 'notes#index_evernote'
+  match 'evernote/reset'  => 'notes#reset_evernote'
+  match 'evernote/notebook'  => 'notes#notebook_evernote', as: :evernote_notebook
+  match 'evernote/note'  => 'notes#note_evernote', as: :evernote_note
+
   # Sample of regular route:
   #   match 'products/:id' => 'catalog#view'
   # Keep in mind you can assign values other than :controller and :action

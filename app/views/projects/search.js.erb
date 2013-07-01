@@ -1,0 +1,23 @@
+$("table.notes").children().remove();	
+var div_str = '<tr>	<%= j render partial: "notes/postit", collection: @notes %></tr>';
+$(div_str).appendTo("table.notes");//.initializeNotes();
+
+var txt = "All Notes";
+<% if  @search_str!="" %> 
+  txt = "Notes search: <%= @search_type %>: '<%= @search_str %>'";
+<% end %>
+
+$("#note_header").html(txt).position(
+  {
+	my: "left bottom",
+	at: 'left top',
+	of: "table.notes",
+	collision: "none"
+  });
+  
+var cloud_elements = '<div><%= j render 'tags/build_tag_cloud', tags: @tags, tag_numbers: @tag_numbers %></div>';
+
+$('#tagcloud a').remove();
+$(cloud_elements).appendTo('#tagcloud');
+
+initialize_cloud();

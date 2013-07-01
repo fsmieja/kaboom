@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   has_many :notes, :dependent => :destroy
   has_many :note_tags, :through => :notes, :source => :tags
   has_many :tags
-  
+  has_many :filters
   
   def add_tag_numbers(tag_numbers)
     ts = tags 

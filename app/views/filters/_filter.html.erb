@@ -1,0 +1,7 @@
+<tr>
+	<td><%= check_box_tag "filter_ids[]", filter.id, false %></td>
+ 	<td>  <%= best_in_place filter, :name %></td>
+	<td><%= best_in_place filter, :str %></td>
+	<td><%= best_in_place filter, :search_type, type: :select, collection: [["Note content", "Note content"], ["Tags", "Tags"]] %></td>
+	<td><%= filter.created_at.to_formatted_s(:long) %></td>		
+</tr>

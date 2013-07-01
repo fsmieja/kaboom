@@ -1,6 +1,13 @@
-<table id="postit-list" class="postits">
-   <tr>
-		<%= render partial: "notes/postit", collection: notes, locals: {per_line: per_line} %>
-	</tr>
-</table>
+<% txt = "All Notes" %>
+<% if  search_str!="" 
+  txt = "Notes search: #{search_type}: '#{search_str}'"
+end %>
 
+<div id="note_header" class="all-notes"><%= txt %></div>
+<div class="notes">
+	<table id="postit-list" class="notes">
+		<tr>
+			<%= render partial: "notes/postit", collection: notes %>
+		</tr>
+	</table>
+</div>

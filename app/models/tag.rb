@@ -4,7 +4,9 @@ class Tag < ActiveRecord::Base
   belongs_to :project
   
   has_many :note_taggings
+  has_many :tag_filterings
   has_many :notes, through: :note_taggings
+  has_many :filters, through: :tag_filterings
   
   
   def self.create_tags(name,many=false)

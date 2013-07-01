@@ -1,6 +1,9 @@
 module ApplicationHelper
+  
+  include EvernoteHelper
+
   def logo
-    image_tag("rails.png", :alt => "Logo", :class => "logo")#,  :size => "246x82")
+    image_tag("einstein-idea.jpeg", :alt => "Logo", :class => "logo",  :size => "82x82")
   end
 
   
@@ -36,4 +39,6 @@ module ApplicationHelper
     end
     events
   end    
+   
+  
 end

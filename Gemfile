@@ -10,7 +10,7 @@ gem 'mysql2', '< 0.3.11'
 #gem 'sqlite3'
 
 gem 'client_side_validations'
-
+gem  'evernote_oauth'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
@@ -27,7 +27,7 @@ gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'execjs'
 gem 'therubyracer'
-
+gem 'best_in_place'
 
 gem 'rspec-rails', '>= 2.4', :group => [:test, :development]
 group :test do

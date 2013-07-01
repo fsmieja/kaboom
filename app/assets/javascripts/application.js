@@ -15,10 +15,14 @@
 //= require jquery.contextmenu
 //= require jquery.tagcloud
 //= require jquery-ui-1.10.3.custom
-//= require tabs
+//= require notes
 //= require raphael-min
 //= require js-mindmap
 //= require jquery.combobox
 //= require metro-dialog
 //= require jquery.notesonpage
 //= require jquery.topzindex
+//= require best_in_place
+//= require best_in_place.purr
+
+

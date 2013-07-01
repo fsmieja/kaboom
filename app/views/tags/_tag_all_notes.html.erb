@@ -1,0 +1,21 @@
+<%= form_tag batch_tag_notes_path, remote: true, method: :put, id: "new_tag_form" do %>
+<% if style=="textbox" %>
+	<%= text_field_tag :new_tag, "", {placeholder: "new tag name"}%>
+<% else %>
+	<%= select_tag 'new_tag', options_from_collection_for_select(all_tags, 'name', 'name'), :include_blank => true	%>
+<% end %>
+<%= hidden_field_tag "note_list" %>
+<% end %>
+<%= render 'tags/autocomplete_field', dom_id: 'new_tag', style: style, all_tags: all_tags %>
+
+<script>
+$(function() {
+	$("#new_tag_form").submit(function() {
+		var notes="";
+		$("table.notes").children().find("tr div").each(function() {
+			notes += $(this).attr("data-id")+' ';
+		});
+		$("#note_list").val(notes);
+	});
+});
+</script>

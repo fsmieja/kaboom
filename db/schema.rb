@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130610085901) do
+ActiveRecord::Schema.define(:version => 20130627113928) do
+
+  create_table "filters", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.string   "str"
+    t.string   "search_type"
+  end
 
   create_table "note_taggings", :force => true do |t|
     t.integer  "note_id"

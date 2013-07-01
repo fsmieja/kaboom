@@ -23,13 +23,20 @@ class NotesController < ApplicationController
   end
 
   def search
-    project = Project.find(params[:id])
-    searchStr = params[:str]
-    searchType = params[:search_type]
-    if searchType=="Tags"
-      @notes = project.notes.joins("inner join note_taggings n on notes.id = n.note_id inner join tags t on n.tag_id = t.id LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("t.name like '%#{searchStr}%'").uniq
+    @project = Project.find(params[:id])
+    @search_str = params[:str]
+    @search_type = params[:search_type]
+    if @search_type=="Tags"
+      where_str = ""
+      tags = @search_str.split(/,/)
+      tags.each_with_index do |t,i|
+        where_str = where_str + " AND " if i>0
+        where_str = where_str + "t.name like '%#{t.strip}%'"
+        puts("WHERE = #{where_str}")
+      end
+      @notes = @project.notes.joins("inner join note_taggings n on notes.id = n.note_id inner join tags t on n.tag_id = t.id LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where(where_str).uniq
     else
-      @notes = project.notes.joins("LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("notes.title like '%#{searchStr}%' or notes.content like '%#{searchStr}%' or notes.location like '%#{searchStr}%'").uniq
+      @notes = @project.notes.joins("LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("notes.title like '%#{@search_str}%' or notes.content like '%#{@search_str}%' or notes.location like '%#{@search_str}%'").uniq
     end
     respond_to do |format|
       format.js # search.js.erb
@@ -52,6 +59,7 @@ class NotesController < ApplicationController
       render :divide_and_conquer, layout: 'note_table'
   end
 
+  
   def divide_query
       @project = Project.find(params[:id])    
       #@tag = Tag.find(params[:tag_id])
@@ -114,8 +122,19 @@ class NotesController < ApplicationController
     @all_tags = @note.project.tags.uniq
   end
   
-  def set_position
+  def mindmap
+    #@project = Project.find(params[:id])
+    note_id = params[:id]
+    #if !tag_id
+    #  tag_id = @project.notes[0].tags[0] 
+    #end
+    @note = Note.find(note_id)
+    @neighbour_notes = @note.get_node_notes
+    @depth = 2
+  end
     
+  
+  def set_position    
     note = Note.find(params[:id])
     project_notes = note.project.notes
     max_z = 0
@@ -209,6 +228,80 @@ class NotesController < ApplicationController
       format.html { redirect_to notes_path(project), notice: "Deleted note" }
       format.js
     end
+  end
+  
+  
+  # EVERNOTE STUFF
+  
+  def reset_evernote
+    session.clear
+    render 'evernote/list'
+  end
+  
+  def requesttoken_evernote
+    callback_url = request.url.chomp("evernote/requesttoken").concat("evernote/callback")
+    begin
+      session[:evernote_request_token] = evernote_client.request_token(:oauth_callback => callback_url)
+      authorize_evernote
+    rescue => e
+      @last_error = "Error obtaining temporary credentials: #{e.message}"
+      render 'evernote/error'
+    end
+  end
+  
+  def authorize_evernote
+    if session[:evernote_request_token]
+      redirect_to session[:evernote_request_token].authorize_url
+    else
+    # You shouldn't be invoking this if you don't have a request token
+      @last_error = "Request token not set."
+      render 'evernote/error'
+    end
+  end  
+
+  def callback_evernote
+    unless params[:oauth_verifier] || session[:evernote_request_token]
+      @last_error = "Content owner did not authorize the temporary credentials"
+      render 'evernote/error'
+      return
+    end
+    session[:evernote_oauth_verifier] = params[:oauth_verifier]
+    begin
+      session[:evernote_access_token] = session[:evernote_request_token].get_access_token(:oauth_verifier => session[:evernote_oauth_verifier])
+      index_evernote
+    rescue => e
+      @last_error = 'Error extracting access token'
+      render 'evernote/error'
+    end
+  end
+      
+  def notebook_evernote
+    guid = params[:guid]
+    @notebook = evernote_notebook(guid)
+    render 'evernote/show_notebook'
+  end
+  
+  def note_evernote
+    guid = params[:guid]
+    @note = evernote_note(guid) 
+    render 'evernote/show' 
+  end
+  
+  def index_evernote
+      begin
+        # Get notebooks
+        #session[:evernote_notebooks] 
+        @nb = evernote_notebooks#.map(&:name)
+        # Get username
+        session[:evernote_username] = evernote_user.username
+        # Get total note count
+        session[:evernote_total_notes] = evernote_total_note_count
+        @notes = evernote_notes
+    render 'evernote/list'
+      rescue => e
+        @last_error = "Error listing notebooks: #{e.message}"
+        render 'evernote/error'
+      end
   end
   
   private

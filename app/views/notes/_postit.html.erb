@@ -1,6 +1,10 @@
-<% if postit_counter % per_line == 0 %>
-	</tr><tr>	
-<% end %>
+<% tags = postit.tags.count %>
 <td>
-	<%= render "notes/postit_div", postit: postit, id: "" %>
+	<div style="position: relative" data-id="<%= postit.id %>" title="<%= postit.content %>">
+		<% if tags>0 %>
+			<%= link_to image_tag('tagged.png', size: "25x25")+"#{postit.tags.count}", note_tags_path(postit.id), class: "tagged", title: "This note has been tagged #{pluralize_number_times(tags)}" %>
+		<% end %>
+		<%= link_to postit.title, note_path(postit) %>
+		<%= link_to image_tag('delete-icon3.png', size: '15x15'), note_path(postit), remote: true, method: :delete, class: "delete", title: "Delete note", confirm: "Are you sure?" %>
+	</div>
 </td>

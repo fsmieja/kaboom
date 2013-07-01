@@ -36,18 +36,30 @@ class ProjectsController < ApplicationController
   
   def show
     @project = Project.find(params[:id])
+    @filters = Filter.all
+    @new_filter = Filter.new
+    @search_str = ""
+    @search_type = ""
     @note = Note.new
-    @num_notes = @project.notes.count
-    @num_tags = @project.tags.count
-    if params[:pretty]
-      @notes = @project.notes.order("created_at desc")
-      @tag_numbers = {}
-      @project.add_tag_numbers(@tag_numbers)    
-      @all_tags = (@project.tags + @project.note_tags).uniq
-      render :pretty_show, layout: 'note_table'
-    end
+    @notes = @project.notes.order("created_at desc")
+    @tag_numbers = {}
+    @all_tags = Tag.all
+    @tags = Note.add_tag_numbers(@notes, @tag_numbers)
+    render :pretty_show, layout: 'project_table'
   end
 
+  def search
+    @project = Project.find(params[:id])
+    @search_str =  params[:search_str]
+    @search_type = params[:search_type]
+    @notes = Filter.filter_notes(@project.notes, @search_str, @search_type)
+    @tag_numbers = {}
+    @tags = Note.add_tag_numbers(@notes, @tag_numbers)
+    respond_to do |format|
+      format.js # search.js.erb
+    end
+  end
+    
   def notes
     @project = Project.find(params[:id])    
       
@@ -57,7 +69,6 @@ class ProjectsController < ApplicationController
     add_tag_numbers_across_notes(@notes)
     @tags = @project.tags.uniq
   end  
-  
   
   def tag
     @added = false
@@ -83,7 +94,6 @@ class ProjectsController < ApplicationController
     @removed = false
     tag_id = params[:tag_id]
     @project = Project.find(params[:id])
-    all_tags = 
     tag = @project.tags.find(tag_id)
     rescue
       @tag_message = "Not able to remove tag"
@@ -97,7 +107,7 @@ class ProjectsController < ApplicationController
         @tag_message = "Tag still being used - remove from note first"
       end
   end  
-  private
 
+  private
 
 end

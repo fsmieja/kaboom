@@ -1,0 +1,13 @@
+<% if @removed %>
+	<% @filter_ids.each do |id| %>
+		var href = '/filters/<%= id %>';
+		// remove the row
+		$('table').find('[data-url="' + href + '"]').parents("table tbody tr").hide();
+	<% end %>
+	var numVisible = $('table tr:visible').length;
+	if (numVisible == 0) {
+		$('table').hide();
+	}
+<% else %>
+	alert('<%= @message %>');
+<% end %>

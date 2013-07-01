@@ -1,24 +1,32 @@
 <div class="search">
 
-<%= form_tag search_notes_path(project_id), id: "search_form", method: :get, remote: true do %>
+<%= form_tag search_project_path(project_id), id: "search_form", method: :get, remote: true do %>
 	<%= select_tag "search_type", "<option value='Note content'>Note content</option><option value='Tags'>Tags</option>".html_safe%>
-	<%= search_field_tag "str", "", {placeholder: "enter search text", class: "search-field"} %>
+	<%= text_field_tag "search_str", "", placeholder: "enter search text" %>
 	<span class="search-cancel" id="search_cancel">x</span>
 	<%= submit_tag "Search" %>
 <% end %>
+
+<%= render 'filters/filter_select', filters: filters, search_str_id: "search_str", search_type_id: "search_type", new_filter: new_filter %>
+
 </div>
 <script>
 $(function(){
-$("#str").width(200);
+	
+	
+$("#search_str").width(400);
+
 $("#search_type").width(120);
-$("#search_cancel").css("position","absolute").position({
+$("#search_cancel").position({
 	my: "right center",
 	at: "right-5 center",
-	of: "#str",
+	of: "#search_str",
 	collision: "none"
 }).click(function(){
-	$("#str").val('');
+	$("#search_str").val('');
 	$("#search_form").submit();
 });
+
 });
+
 </script>

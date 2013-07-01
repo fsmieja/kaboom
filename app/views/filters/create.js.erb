@@ -1,0 +1,9 @@
+<% if @added %>
+	$("#new_filter")[0].reset();	
+	var sel_str = "<option value='<%= @new_filter.id %>'><%= @new_filter.name %></option>";
+	$(sel_str).appendTo("#filter");
+	$("#filter").val('<%= @new_filter.id %>');
+<% elsif !@updated %>
+  alert('<%= @message %>');
+<% end %>
+
