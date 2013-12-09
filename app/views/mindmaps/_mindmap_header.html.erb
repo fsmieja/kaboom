@@ -1,0 +1,30 @@
+<%= link_to "Back to Project", project_path({id: project_id, pretty: true}), id: "project_link"%>
+<span class="show-leaves-toggle"><%= text %>: <%= check_box 'toggle_leaves', "toggle" %> </span>
+<%= submit_tag "Jiggle Nodes", class: "jiggle-button" %>
+
+
+<script>
+var showLeaves = $("#toggle_leaves_toggle").prop("checked");
+$(function() {
+  $(".show-leaves-toggle")
+	.position({
+		my: "left center",
+		at: "right+50 center",
+		of: "#project_link",
+		collision: "none"	
+  });	
+  $("#toggle_leaves_toggle").click(function() {
+		mindmapObj.toggleLeaves($("#toggle_leaves_toggle").prop(":checked"));
+  });
+  
+  $(".jiggle-button").position({
+		my: "left center",
+		at: "right+50 center",
+		of: "#toggle_leaves_toggle",
+		collision: "none"
+	})
+	.click(function() {
+		mindmapObj.jiggle();
+	});
+});
+</script>

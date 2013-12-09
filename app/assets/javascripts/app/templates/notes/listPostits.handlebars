@@ -1,0 +1,10 @@
+<div class="notes">
+	<table id="postit-list" class="notes">
+	  {{#each notes}}
+		  {{view App.ShowPostitView noteBinding="this"}}
+	  {{/each}}
+	</table>
+</div>
+<div class="commands">
+  <a href="#" {{action "refreshListing"}}>Refresh Listing</a>
+</div>

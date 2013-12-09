@@ -18,26 +18,23 @@ class NotesController < ApplicationController
     else
       @per_page = params[:per_page] ||  20
       order_str = sort_column + " "  + sort_direction
-      @notes = @project.notes.order(order_str).page(params[:page]).per_page(@per_page)
+      #@notes = @project.notes.order(order_str).page(params[:page]).per_page(@per_page)
+      @notes = @project.notes.joins(:tags).group("notes.id").select("notes.*, count(tags.id) as tag_num")
+      respond_to do |format|
+       format.html # index.html.erb
+       format.json { render json: @notes }
+      end
     end
+    
   end
 
   def search
     @project = Project.find(params[:id])
     @search_str = params[:str]
     @search_type = params[:search_type]
-    if @search_type=="Tags"
-      where_str = ""
-      tags = @search_str.split(/,/)
-      tags.each_with_index do |t,i|
-        where_str = where_str + " AND " if i>0
-        where_str = where_str + "t.name like '%#{t.strip}%'"
-        puts("WHERE = #{where_str}")
-      end
-      @notes = @project.notes.joins("inner join note_taggings n on notes.id = n.note_id inner join tags t on n.tag_id = t.id LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where(where_str).uniq
-    else
-      @notes = @project.notes.joins("LEFT OUTER JOIN positions on positions.note_id = notes.id").order("z_index asc").where("notes.title like '%#{@search_str}%' or notes.content like '%#{@search_str}%' or notes.location like '%#{@search_str}%'").uniq
-    end
+    @focus_digress = params[:submit]
+    @notes = Note.get_search_results(@project.notes, @search_type, @search_str, @focus_digress)
+
     respond_to do |format|
       format.js # search.js.erb
     end
@@ -216,6 +213,9 @@ class NotesController < ApplicationController
     project = @note.project
     @all_tags = (project.tags+project.note_tags).uniq
     @new_note = Note.new
+    respond_to do |format|
+      format.json { render json: @note }
+    end
   end
   
   def destroy

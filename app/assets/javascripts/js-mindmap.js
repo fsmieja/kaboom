@@ -67,21 +67,26 @@
 	this.id = opts.id;
     this.name = name;
     this.href = opts.href;
+    this.visible = true;
     this.title = opts.title;
     if (opts.url) {
       this.url = opts.url;
     }
+   	var texthint = (!parent) ? this.title : this.title + ' (click to drill down)'; 
 
     // create the element for display
     if (parent && parent.parent) { // i am a leaf
     	var leaf = '<div class="boo">';
-    	leaf +=        '<a href="' + this.href + '" class="leaf" title="'+ this.title + '">' + this.name + '</a>';
-    	leaf +=        '<a class="reveal" href="#" title="Click to view the note">view note</a>';
-    	leaf +=    '</div>';
-	  	this.el = $(leaf);
-    } 
+   		leaf +=        '<a href="' + this.href + '" class="leaf" title="'+ texthint+ '">' + this.name + '</a>';
+   		leaf +=        '<a class="reveal" href="#" title="Click to view the note">view note</a>';
+   		leaf +=    '</div>';
+  		this.el = $(leaf);
+    	this.visible = this.options.showLeaves ;
+    	if (!this.visible)
+    		this.el.hide();
+  	}
     else {
-	  this.el = $('<a href="' + this.href + '" title="'+ this.title + '">' + this.name + '</a>');
+ 	  this.el = $('<a href="' + this.href + '" title="'+texthint+'">' + this.name + '</a>');
       this.el = this.el.addClass('node');
     }
     $('#mindmap').prepend(this.el);
@@ -102,7 +107,6 @@
     this.moving = false;
     this.moveTimer = 0;
     this.obj.movementStopped = false;
-    this.visible = true;
     this.x = this.options.box.x0+1;
     this.y = this.options.box.y0+1;
     this.dx = 0;
@@ -185,6 +189,50 @@
 */
   };
 
+  Node.prototype.jiggle = function () {
+
+	var randx = 100*Math.random() * ((Math.random()>0.5) ? 1 : -1);
+	var randy = 100*Math.random() * ((Math.random()>0.5) ? 1 : -1);
+    this.x += randx;
+    this.y += randy;
+    //alert(randx+","+randy);
+    var showx, showy;
+    if (this.el.find("a.leaf") && !this.el.width()) {
+	  showx = this.x - (this.el.find("a.leaf").width() / 2);
+	}
+	else
+	  showx = this.x - (this.el.width() / 2);
+    showy = this.y - (this.el.height() / 2) - 10;	
+
+    this.el.css({'left': showx + "px", 'top': showy + "px"});
+    var i,len;
+    for (i = 0, len = this.children.length; i < len; i++) {
+    	//alert(i+','+len);
+      this.children[i].jiggle();
+    }
+
+  	//child.el.jiggle();
+  };
+
+  Node.prototype.toggleLeaves = function (state) {
+    var i,j,len,len2;
+    for (i = 0, len = this.children.length; i < len; i++) {
+  	    var child = this.children[i];
+  	    //alert(child.children.length);
+	    for (j = 0, len2 = child.children.length; j < len2; j++) {
+ 	 	    var leaf = child.children[j];
+ 	 	    if (state != undefined)
+ 	 	    	leaf.visible = state; 	 	    	
+ 	 	    else
+ 	 	    	leaf.visible = !leaf.visible;
+ 	 	    if (leaf.visible)
+ 	 	    	leaf.el.show();
+ 	 	    else
+ 	 	    	leaf.el.hide();
+ 	 	} 
+    }
+  };
+  
   // ROOT NODE ONLY:  control animation loop
   Node.prototype.animateToStatic = function () {
 
@@ -292,6 +340,19 @@
       return false;
     }
 
+	if (!this.visible) {
+		//this.x = this.parent.x;
+		//this.y = this.parent.y;
+		/*
+    	if (this.el.find("a.leaf") && !this.el.width()) 
+	  	  showx = this.x - (this.el.find("a.leaf").width() / 2);
+		else
+	  	  showx = this.x - (this.el.width() / 2);
+    	showy = this.y - (this.el.height() / 2) - 10;
+    	*/
+    	//this.el.css({'left': this.x + "px", 'top': this.y + "px"});
+		return false;
+	}
     //apply accelerations
     forces = this.getForceVector();
     this.dx += forces.x * this.options.timeperiod;
@@ -501,6 +562,7 @@
   };
 
   Line.prototype.updatePosition = function () {
+
     if (!this.options.showSublines && (!this.start.visible || !this.end.visible)) {
       return;
     }
@@ -543,6 +605,18 @@
     });
   };
 
+  $.fn.toggleLeaves = function (state) {
+        this[0].root.toggleLeaves();
+        this[0].root.animateToStatic();
+
+  };
+  
+  $.fn.jiggle = function () {
+        this[0].root.jiggle();
+        this[0].root.animateToStatic();
+
+  };
+
   $.fn.mindmap = function (options) {
     // Define default settings.
     options = $.extend({
@@ -568,7 +642,8 @@
       updateIterationCount: 20,
       showProgressive: false,
       centreOffset: 100,      
-      timer: 0
+      timer: 0,
+      showLeaves: true
     }, options);
 
     var $window = $(window);

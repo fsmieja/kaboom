@@ -7,6 +7,8 @@ Kaboom::Application.routes.draw do
   match 'tags/delete_all'       => 'tags#delete_all', as: :delete_all_tags, via: :put 
   match 'filters/delete_all'    => 'filters#delete_all', as: :delete_all_filters, via: :put 
 
+  resources :contacts
+
   resources :projects, :notes, :tags, :filters
 
   match 'filters/select'        => 'filters#select', as: :filter_selection, via: :post 

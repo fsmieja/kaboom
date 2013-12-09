@@ -9542,7 +9542,6 @@ $.widget( "ui.dialog", {
 				}
 			});
 		}
-
 		this.overlay = $("<div>")
 			.addClass("ui-widget-overlay ui-front")
 			.appendTo( this._appendTo() );

@@ -1,7 +1,8 @@
 <% if @added %>
 	$("form#new_note")[0].reset();	
 	var div_str = "<%= j render "notes/draggable_postit", postit: @note, grid_id: "-1", top: "-1", left: "-1", z_index: "-1" %>";
-	$(div_str).appendTo("#table").initializeNotes().topZIndex();
+	if ($('#table').length)
+		$(div_str).appendTo("#table").initializeNotes().topZIndex();
 <% else %>
   alert('<%= @message %>');
 <% end %>

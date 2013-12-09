@@ -1,4 +1,5 @@
-<%= link_to "Back to Project", project_path({id: @tag.notes[0].project, pretty: true})%>
+<%= render 'mindmaps/mindmap_header', text: "Show Leaves (Notes)", project_id: @tag.notes[0].project %>
+
 <div class="mindmap" id="mindmap">
   <ul>
     <li><%= link_to (@tag.name.length>10 ? "#{@tag.name[0,10]}..." : @tag.name), mindmap_path(@tag), title: @tag.name %>
@@ -15,7 +16,7 @@
    		      	<% t.notes.each do |n| %>
         		  <li>
         		  	<% this_id = "leaf_#{t.id}_#{n.id}" %>
-        			<%= link_to n.title, note_path(n), id: this_id  %>
+        			<%= link_to n.title, note_mindmap_path(n), title: "Note", id: this_id  %>
         	  	  </li>
        			<% end %>
         		</ul>
@@ -38,12 +39,13 @@
 
 <script>
 // load the mindmap
-$(document).ready(function() {
+var mindmapObj; 
+$(function() {
 
-		var z_index = 200;
+	var z_index = 200;
 	$(".rotate-3").hide();
   // enable the mindmap in the body
-  var mindmapObj = $('#mindmap');	 
+  mindmapObj = $('#mindmap');	 
   mindmapObj.mindmap({
 	box: {
 		x0: 0,//mindmapObj.position().left,
@@ -51,8 +53,8 @@ $(document).ready(function() {
 		dx: mindmapObj.width(),
 		dy: mindmapObj.height()
 	},
-    centreOffset: 0
-     
+    centreOffset: 0,
+    showLeaves: showLeaves
 
   });
 	
@@ -143,6 +145,7 @@ $(document).ready(function() {
   rootNode.find('>ul').each(function() { 
     $('>li', this).each(addLI);
   });
+
 
 });   
 

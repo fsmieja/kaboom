@@ -1,43 +1,12 @@
-<h1>Notes for Project '<%=@project.name%>'</h1>
+<h1>Notes</h1>
 
+postits
+<script type="text/x-handlebars">
+  {{ view App.ListPostitsView }}
+</script>
 
-<%= will_paginate @notes, :class => 'flickr_pagination' %>
-
-<table class="cloud-and-table">
-	<tr>
-		<td width="15%">
-			<table id="tag-list" class="url-list sortable">
-  			<tr>
-    			<th id="cloud-header">Tag Cloud</th>
-			</tr>
-			<tr >
-				<td style="padding: 5px">
-					<%= render 'tags/tag_cloud', :tags => @tags, :tag_numbers => @tag_numbers %>
-				</td>
-			</tr>
-			</table>	
-		</td>
-		<td>
-			<table id="table-list" class="url-list sortable">
-  			<tr>
-    			<th id="list-header">Title</th>
-	    			<th>Num Tags</th>
-      				<th><%= sortable("created_at", "Created") %> </th>
-      				<th><%= sortable("updated_at", "Updated") %> </th>
-    			<th></th>
-  			</tr>
-				<%= render @notes %>
-			</table>
-		</td>	
-	</tr>
-</table>
-<%= button_to "Create Note", new_project_note_path(@project.id), :method => 'get' %>
-<%= link_to "Pretty notes", project_notes_path({ id: @project, pretty: true})%> |
-<%= link_to "Project", project_path(@project)%> |
-<%= link_to "All Projects", projects_path %> 
-
-<script>
-	$('#tag-list').height($('#table-list').height());
-	$('#cloud-header').height($('#list-header').height());
-	
+<script type="text/javascript">
+  $(function() {
+    App.notesController.loadAll(<%= @notes.to_json.html_safe %>);
+  });
 </script>

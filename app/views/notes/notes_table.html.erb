@@ -6,7 +6,7 @@
 <%= render 'notes/search_note', project_id: @project.id %>
 <button id="enter_new_note" class="new-note">Add a note</button>
 <div class="expand-full-screen"><%= link_to(image_tag("fullscreen-close.png", size: "25x25"), project_path({id: @project, pretty: true})) %></div>			
-<div class="all-notes">All Notes for <%= link_to @project.name, project_path({id: @project.id, pretty: true}) %></div>
+<div id="note_header" class="all-notes">All Notes for <%= link_to @project.name, project_path({id: @project.id, pretty: true}) %></div>
 <div id="table" class="note-table">
 	<%= render "notes/arrange_notes_on_table", notes: @notes %>
 </div>
@@ -39,7 +39,7 @@ function initPage() {
 		}
 	);
 
-	$(".all-notes").position(
+	$("#note_header").position(
 		{
 			my: "center bottom",
 			at: 'center top+'+delta,

@@ -52,7 +52,8 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
     @search_str =  params[:search_str]
     @search_type = params[:search_type]
-    @notes = Filter.filter_notes(@project.notes, @search_str, @search_type)
+    @focus_digress = params[:commit]
+    @notes = Note.get_search_results(@project.notes, @search_type, @search_str, @focus_digress)
     @tag_numbers = {}
     @tags = Note.add_tag_numbers(@notes, @tag_numbers)
     respond_to do |format|

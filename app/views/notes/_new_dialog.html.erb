@@ -2,12 +2,14 @@
 <%= form_for note, remote: true do |f| %>
 	<fieldset>
 
-	<%= f.label 'Title' %>	
-	<%= f.text_field :title, class: "text ui-widget-content ui-corner-all" %><br/>
+	<%= f.label 'Title *' %>	
+	<%= f.text_field :title, class: "text ui-widget-content ui-corner-all", autocomplete: "off" %><br/>
+	<span id="title_message" class="countdown"></span><br/>
 	<%= f.label 'Location' %>	
 	<%= f.text_field :location, class: "text ui-widget-content ui-corner-all" %><br/>
 	<%= f.label 'Content' %>	
 	<%= f.text_area :content, class: "text ui-widget-content ui-corner-all" %><br/>
+	<span id="content_message" class="countdown"></span>
 	</fieldset>
 
 	<%= hidden_field_tag "id", project_id %>
@@ -15,13 +17,33 @@
 
 
 <script>
+
+var max_title_len = 30;
+var max_content_len = 120;
+
+function updateCountdown(max, input_field, message_field) {
+    // 140 is the max message length
+    var val = input_field.val();
+    var remaining = max - val.length;
+    if (remaining <= 0) {
+    	remaining = 0;
+    	val = val.substring(0, max);
+    	input_field.val(val);
+		message_field.removeClass("countdown").addClass("too-long");
+    }
+    else
+   		message_field.removeClass("too-long").addClass("countdown");
+    message_field.text(remaining + ' character'+((remaining!=1)? 's' : '')+' remaining.');
+}
+
 function updateTips( t ) {
 	tips.text( t ).addClass( "ui-state-highlight" );
 	setTimeout(function() {
 		tips.removeClass( "ui-state-highlight", 1500 );
 	}, 500 );
 }	
-	
+	    	$("#message_id").addClass("too-long");
+
 function checkLength( o, n, min, max ) {
 	if ( o.val().length > max || o.val().length < min ) {
 		o.addClass( "ui-state-error" );
@@ -37,25 +59,28 @@ $(function() {
 		
  	$( "#dialog-form" ).dialog({
 		autoOpen: false,
-		height: 420,
+		height: 470,
 		width: 450,
 		modal: true,
 		buttons: {
 			"Add Note": function() {
 				var bValid = true;
 				allFields.removeClass( "ui-state-error" );
-				bValid = bValid && checkLength( title, "title", 3, 50 );
+				bValid = bValid && checkLength( title, "title", 3, max_title_len ) && checkLength( content, "content", 0, max_content_len );
 				if ( bValid ) {
 					$("#new_note").submit();
 					$( this ).dialog( "close" );
+					$(".ui-state-focus").removeClass("ui-state-focus");
 				}
 			},
 			Cancel: function() {
 				$( this ).dialog( "close" );
+				$(".ui-state-focus").removeClass("ui-state-focus");
 			}
 		},
 		close: function() {
 			allFields.val( "" ).removeClass( "ui-state-error" );
+			$(".ui-state-focus").removeClass("ui-state-focus");
 		}
 	});
 	
@@ -64,10 +89,25 @@ $(function() {
 	});
 	
 	var title = $( "#note_title" );
+	var title_message = $("#title_message");
 	var location = $( "#note_location" );
 	var content = $( "#note_content" );
+	var content_message = $("#content_message");
 	allFields = $( [] ).add( title ).add( location ).add( content ),
 	tips = $( ".validateTips" );
 	
+    updateCountdown(max_title_len,title,title_message);
+    updateCountdown(max_content_len,content,content_message);
+    title.change(function() {
+    	updateCountdown(max_title_len,title,title_message);
+    }).keyup(function() {
+    	updateCountdown(max_title_len,title,title_message);
+    });
+    content.change(function() {
+    	updateCountdown(max_content_len,content,content_message);
+    }).keyup(function() { 
+    	updateCountdown(max_content_len,content,content_message);
+    });
+
 });
 </script>

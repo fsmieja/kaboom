@@ -16,7 +16,7 @@ gem  'evernote_oauth'
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-
+  #, git: 'git://github.com/emberjs/ember-rails.git'
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
 
@@ -25,6 +25,7 @@ end
 
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'ember-rails', '0.4.0'
 gem 'execjs'
 gem 'therubyracer'
 gem 'best_in_place'

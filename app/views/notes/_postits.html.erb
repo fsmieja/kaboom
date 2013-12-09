@@ -11,3 +11,14 @@ end %>
 		</tr>
 	</table>
 </div>
+
+
+<script type="text/x-handlebars">
+  {{ view App.ListPostitsView }}
+</script>
+
+<script type="text/javascript">
+  $(function() {
+    App.notesController.loadAll(<%= @notes.to_json.html_safe %>);
+  });
+</script>

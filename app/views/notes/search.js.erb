@@ -1,4 +1,17 @@
 $("#table").children().remove();	
 var div_str = '<div id="temp"><%= j render "notes/arrange_notes_on_table", notes: @notes %></div>';
-$(div_str).children().appendTo("#table").initializeNotes().topZIndex();
-//alert($("#table").html());
+$(div_str).children().appendTo("#table").initializeNotes();
+<% if  @search_str=="" %> 
+  var txt = "All Notes for <%= j link_to @project.name, project_path({id: @project.id, pretty: true}) %>";
+<% else %>
+  var txt = "<%= @focus_digress %> results for string '<%= @search_str %>' (<%= @search_type %>)";
+<% end %>
+$("#note_header").html(txt).position(
+  {
+	my: "center bottom",
+	at: 'center top',
+	of: "#table",
+	collision: "none"
+  });
+//$(".ui-autocomplete").topZIndex();
+//$(".ui-dialog").topZIndex();

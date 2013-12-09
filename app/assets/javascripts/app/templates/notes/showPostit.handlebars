@@ -1,0 +1,11 @@
+
+<td>
+	<div style="position: relative" data-id="{{ note.id }}" title="{{ note.content }}">
+	    {{#if note.num_tags }} 
+		<a href="#" {{action "show"}}><img src="/assets/tagged.png" height="25" width="25" class="tagged" title={{{concat "This note has been tagged" note.num_tags}}}/>{{ note.num_tags }}</a>
+		{{/if}}
+		<a href="#" {{action "show"}}>{{ note.title }}</a>
+		<a href="#" {{action "delete"}}><img src='/assets/delete-icon3.png' height="15" width="15"  class="delete" title="Delete note"/></a>
+	</div>
+</td>
+			

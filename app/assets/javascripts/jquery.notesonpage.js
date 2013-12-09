@@ -188,7 +188,7 @@ jQuery.fn.initializeDivideNotes = function(options) {
 		top  = margin + line_number*line_height;
 	  }
 	  else {
-	  	alert('random');
+	  	//alert('random');
 		top  = Math.random()*max_top;
 		left = Math.random()*max_left;
 	  }

@@ -4,7 +4,8 @@
 	<%= select_tag "search_type", "<option value='Note content'>Note content</option><option value='Tags'>Tags</option>".html_safe%>
 	<%= search_field_tag "str", "", {placeholder: "enter search text", class: "search-field"} %>
 	<span class="search-cancel" id="search_cancel">x</span>
-	<%= submit_tag "Search" %>
+	<%= submit_tag "Focus" %>
+	<%= submit_tag "Digress" %>
 <% end %>
 </div>
 <script>
